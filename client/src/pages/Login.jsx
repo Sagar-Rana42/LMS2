@@ -10,12 +10,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useLoginUserMutation, useRegisterUserMutation } from "@/features/api/authApi";
+import {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+} from "@/features/api/authApi";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
+
 
 export default function Login() {
-
   const [loginInput, setLoginInput] = useState({
     email: "",
     password: "",
@@ -24,7 +29,7 @@ export default function Login() {
     email: "",
     username: "",
     password: "",
-    phone:"",
+    phone: "",
   });
 
   /*
@@ -41,33 +46,70 @@ export default function Login() {
   };
   */
 
-
- const handleInputLogin = (e)=>{
+  const handleInputLogin = (e) => {
     // console.log(`calling Login  ,4${e.target.name}  = ${e.target.value}`);
-    const {name , value} = e.target
-    setLoginInput({ ...loginInput , [name]:value})
- }
+    const { name, value } = e.target;
+    setLoginInput({ ...loginInput, [name]: value });
+  };
 
- const handleInputSignup = (e)=>{
+  const handleInputSignup = (e) => {
     // console.log(`calling signup  , ${e.target.name} : ${e.target.value}`);
-    const {name , value} = e.target
-    setSignupInput({ ...signupInput , [name]:value})
- }
+    const { name, value } = e.target;
+    setSignupInput({ ...signupInput, [name]: value });
+  };
 
- const [registerUser , {data : registerData , isError:registerIsError , isLoading:registerIsLoading ,  isSuccess:registerIsSuccess}] = useRegisterUserMutation()
- console.log("register user from login page , after calling reguster user , " ,registerData)
- const [loginUser , {data: loginData , isError:loginIsError , isLoading:loginIsLoading , isSuccess:loginIsSuccess}] = useLoginUserMutation()
- console.log("login user from login page , after calling login user , " ,loginData)
-  const handleRegistration = async (type)=>{
-    const inputdata = type === "login" ? loginInput : signupInput
-    // console.log(`registration data of ${type} ` , data);
-    const action = type === "signup" ? registerUser : loginUser
-    
-    await action(inputdata)
-    
-  }
-
+  const [
+    registerUser,
+    {
+      data: registerData,
+      isError: registerIsError,
+      isLoading: registerIsLoading,
+      isSuccess: registerIsSuccess,
+    },
+  ] = useRegisterUserMutation();
+  //  console.log("register user from login page , after calling reguster user , " ,registerData)
   
+  const [
+    loginUser,
+    {
+      data: loginData,
+      isError: loginIsError,
+      isLoading: loginIsLoading,
+      isSuccess: loginIsSuccess,
+    },
+  ] = useLoginUserMutation();
+  console.log("login data " ,loginData)
+  //  console.log("login user from login page , after calling login user , " ,loginData)
+  const handleRegistration = async (type) => {
+    const inputdata = type === "login" ? loginInput : signupInput;
+    // console.log(`registration data of ${type} ` , data);
+    const action = type === "signup" ? registerUser : loginUser;
+
+    await action(inputdata);
+  };
+
+  useEffect(() => {
+    if(registerData && registerIsSuccess){
+      toast.success(registerData?.msg || "user register successfully")
+    }
+   else if(loginData && loginIsSuccess){
+      toast.success(loginData?.msg || "user login successfull")
+    }
+    else if(registerIsError){
+      toast.error(loginData?.msg || " signUp fail")
+    }
+    else if(loginIsError){
+      toast.error(loginData?.msg || "login  failed")
+    }
+    // toast("please wait")
+  }, [
+    loginIsLoading,
+    registerIsLoading,
+    loginData,
+    registerData,
+    loginIsError,
+    registerIsError,
+  ]);
 
   return (
     <div className=" w-full flex  justify-center mt-40">
@@ -92,9 +134,8 @@ export default function Login() {
                   required={true}
                   name="email"
                   // onChange={(e) => changeInput(e, "login")}
-                  onChange =  {handleInputLogin}
+                  onChange={handleInputLogin}
                   value={loginInput.email}
-
                 />
               </div>
               <div className="space-y-1">
@@ -105,21 +146,24 @@ export default function Login() {
                   className="rounded"
                   name="password"
                   // onChange={(e) => changeInput(e, "login")}
-                  onChange =  {handleInputLogin}
+                  onChange={handleInputLogin}
                   required={true}
                   value={loginInput.password}
                 />
               </div>
             </CardContent>
             <CardFooter>
-              <Button disabled={loginIsLoading} onClick={()=>(handleRegistration("login"))} >
-              {
-                loginIsLoading ? (
+              <Button
+                disabled={loginIsLoading}
+                onClick={() => handleRegistration("login")}
+              >
+                {loginIsLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   </>
-                ):"Login"
-              }
+                ) : (
+                  "Login"
+                )}
               </Button>
             </CardFooter>
           </Card>
@@ -169,7 +213,7 @@ export default function Login() {
                   required={true}
                   className="rounded"
                   name="password"
-                  onChange =  {handleInputSignup}
+                  onChange={handleInputSignup}
                   value={signupInput.password}
                 />
               </div>
@@ -182,21 +226,24 @@ export default function Login() {
                   required={true}
                   className="rounded"
                   name="phone"
-                  onChange =  {handleInputSignup}
+                  onChange={handleInputSignup}
                   value={signupInput.phone}
                 />
               </div>
             </CardContent>
             <CardFooter>
-
-            <Button disabled={registerIsLoading} onClick={() => handleRegistration("signup")}>
-                {
-                  registerIsLoading ? (
-                    <>
-                    <Loader2  />please wait
-                    </>
-                  ):"sign up"
-                }
+              <Button
+                disabled={registerIsLoading}
+                onClick={() => handleRegistration("signup")}
+              >
+                {registerIsLoading ? (
+                  <>
+                    <Loader2 />
+                    please wait
+                  </>
+                ) : (
+                  "sign up"
+                )}
               </Button>
             </CardFooter>
           </Card>
