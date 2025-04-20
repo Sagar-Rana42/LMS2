@@ -52,8 +52,9 @@ export const registerUser = async ( req, res ) => {
 export const loginUser = async (req, res) => {
   try {
         const { email, password } = req.body;
-        // console.log(email)
-        // console.log(password)
+        console.log("sending data of login " , );
+        console.log(email)
+        console.log(password)
         if (!email || !password) {
         return res
             .status(400)
@@ -61,7 +62,7 @@ export const loginUser = async (req, res) => {
         }
 
         const user = await User.findOne({ email });
-        // console.log("user = ", user)
+        console.log("user = ", user)
         if (!user) {
             return res
                 .status(400)
@@ -83,10 +84,10 @@ export const loginUser = async (req, res) => {
         .json({success:false,msg:"incorrect  password or  email"})
     }
   
-
+   
+    
     await generateToken(res , user?._id ,`welcome back ${user?.username}` )
-    console.log("sending data of login " , );;
-
+    
 
   } catch (error) {
         console.log("error from  login ", error.message )

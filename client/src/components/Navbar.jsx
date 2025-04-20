@@ -1,6 +1,7 @@
 import { Menu, School } from "lucide-react";
 import React, { useEffect } from "react";
-import { Link } from "lucide-react";
+import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 import {
   DropdownMenu,
@@ -28,21 +29,23 @@ const Navbar = () => {
   
   const user = true;
   const role = "instructor"
+  const navigate = useNavigate()
   
   return (
-    <div className="h-16 bg-gray-400 border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10">
+    <div className="h-16 backdrop-blur-lg
+     bg-gray-400 border-b  border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10">
       {/* Desktop */}
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center gap-10 h-full">
         <div className="flex items-center gap-2">
           <School size={"30"} />
           {/* <Link to="/"> */}
             <h1 className="hidden md:block font-extrabold text-2xl">
-              E-Learning
+              Codesphare
             </h1>
           {/* </Link> */}
         </div>
         {/* User icons and dark mode icon  */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 text-white">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -55,17 +58,17 @@ const Navbar = () => {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-white">My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
-                    {/* <Link to="my-learning">My learning</Link> */}
+                    <Link to="my-learning" className="text-white">My learning</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     {" "}
-                    {/* <Link to="profile">Edit Profile</Link>{" "} */}
+                    <Link to="profile">Edit Profile</Link>{" "}
                   </DropdownMenuItem>
-                  <DropdownMenuItem >
+                  <DropdownMenuItem  className="text-white">
                     Log out
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -79,7 +82,7 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Button variant="outline">
+              <Button variant="outline" onClick={()=>(navigate('/login'))}>
                 Login
               </Button>
               <Button >Signup</Button>

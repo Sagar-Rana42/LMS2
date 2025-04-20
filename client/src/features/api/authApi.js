@@ -53,10 +53,10 @@ export const  {
 */
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { userLoggedIn, userLoggedOut } from '../authSlice.js';
+// import { userLoggedIn, userLoggedOut } from '../authSlice.js';
 import { isFulfilled } from '@reduxjs/toolkit';
 
-const USER_API = "http://localhost:5173/api/v1/user/";
+const USER_API = "http://localhost:4000/api/v1/user/";
 
 export const authApi = createApi({
     reducerPath: "authApi",
@@ -89,36 +89,12 @@ export const authApi = createApi({
                         dispatch(userLoggedIn({ user: result.data.user }));
                     }
                 } catch (error) {
-                    console.error(`Error from authApi:  ${error.error} || ${error.data} || ${error}`);
+                    console.log("error from authApi " + error )
                 }
             },
         }),
 
-        /*
-        logoutUser:builder.query({
-            query:(data)=>({
-                url:"logout",
-                method:"GET",
-
-            }),
-            async onQueryStarted(args , {queryFulfilled , dispatch}){
-                try {
-                    const result = await queryFulfilled;
-                    dispatch(userLoggedOut)
-                } catch (error) {
-                    console.log(`Error from authApi : ${error.error} || ${error.data} || ${error}`)
-                }
-            }
-        }),
-        fetchProfile:builder.query({
-            query:(data)=>({
-                url:"get-profile",
-                method:"GET",
-
-
-            })
-        })
-        */
+        
     }),
 });
 

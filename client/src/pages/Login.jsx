@@ -18,9 +18,12 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
+import { Navigate, useNavigate } from "react-router";
 
 
 export default function Login() {
+  const navigate = useNavigate()
+
   const [loginInput, setLoginInput] = useState({
     email: "",
     password: "",
@@ -65,6 +68,7 @@ export default function Login() {
       isError: registerIsError,
       isLoading: registerIsLoading,
       isSuccess: registerIsSuccess,
+      error:registerErrorData,
     },
   ] = useRegisterUserMutation();
   //  console.log("register user from login page , after calling reguster user , " ,registerData)
@@ -76,9 +80,10 @@ export default function Login() {
       isError: loginIsError,
       isLoading: loginIsLoading,
       isSuccess: loginIsSuccess,
+      error : loginErrorData,
     },
   ] = useLoginUserMutation();
-  console.log("login data " ,loginData)
+  // console.log("login data " ,loginData)
   //  console.log("login user from login page , after calling login user , " ,loginData)
   const handleRegistration = async (type) => {
     const inputdata = type === "login" ? loginInput : signupInput;
@@ -91,15 +96,18 @@ export default function Login() {
   useEffect(() => {
     if(registerData && registerIsSuccess){
       toast.success(registerData?.msg || "user register successfully")
+
     }
-   else if(loginData && loginIsSuccess){
+    if(loginData && loginIsSuccess){
       toast.success(loginData?.msg || "user login successfull")
+      navigate("/")
     }
-    else if(registerIsError){
-      toast.error(loginData?.msg || " signUp fail")
+    if(registerIsError){
+      toast.error(registerErrorData?.data?.msg || " signUp fail")
     }
-    else if(loginIsError){
-      toast.error(loginData?.msg || "login  failed")
+    if(loginIsError){
+      console.log("error form login page ", loginErrorData)
+      toast.error(loginErrorData?.data?.msg || "login  failed")
     }
     // toast("please wait")
   }, [
@@ -109,6 +117,8 @@ export default function Login() {
     registerData,
     loginIsError,
     registerIsError,
+    loginErrorData,
+    registerErrorData
   ]);
 
   return (

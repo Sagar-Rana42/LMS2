@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 
 export const  generateToken = async(res , id , msg)=>{
     const user = await User.findById(id)
+    // console.log("user from generate token" , user)
     if(!user){
         return res
         .status(400)
