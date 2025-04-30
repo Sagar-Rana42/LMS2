@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import connectDB from './DB/connectDB.js'
 import cors from "cors"
 
+
 const app = express();
 
 dotenv.config({})
@@ -30,6 +31,7 @@ connectDB()
 .catch((err)=>{
     console.log('failed to connect in index.js, ', err)
 })
+
 
 
 import userRoute from "./route/user.route.js"

@@ -24,12 +24,28 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Separator } from "@radix-ui/react-dropdown-menu";
+import { useLogoutUserMutation } from "@/features/api/authApi";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  
-  const user = true;
+  const {user} = useSelector(store=>store.auth);
+  console.log("user = ",user)
+
   const role = "instructor"
   const navigate = useNavigate()
+  const [ logoutUser , {data,isSuccess } ] =useLogoutUserMutation();
+
+  const logoutHandler = async()=>{
+    await logoutUser();
+    // refetch();
+  }
+  useEffect(()=>{
+    if(isSuccess){
+      toast.success(data?.msg || "User log out successfully")
+      navigate("/login")
+    }
+  },[isSuccess])
   
   return (
     <div className="h-16 backdrop-blur-lg
@@ -68,16 +84,16 @@ const Navbar = () => {
                     {" "}
                     <Link to="profile">Edit Profile</Link>{" "}
                   </DropdownMenuItem>
-                  <DropdownMenuItem  className="text-white">
+                  <DropdownMenuItem  className="text-white" onClick={logoutHandler}>
                     Log out
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
-                {/* {user?.role === "instructor" && (
+                {user?.role === "instructor" && (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem><Link to="/admin/dashboard">Dashboard</Link></DropdownMenuItem>
+                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
                   </>
-                )} */}
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
@@ -125,7 +141,8 @@ const MobileNavbar = () => {
         <nav className="flex flex-col space-y-4">
           <Link to="/my-learning">My Learning</Link>
           <Link to="/profile">Edit Profile</Link>
-          <p>Log out</p>
+          {/* <Link to="/logout">Edit Profile</Link> */}
+          <p >Log out</p>
         </nav>
         {role === "instructor" && (
           <SheetFooter>

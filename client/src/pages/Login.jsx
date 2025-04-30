@@ -123,11 +123,12 @@ export default function Login() {
 
   return (
     <div className=" w-full flex  justify-center mt-40">
-      <Tabs defaultValue="account" className="w-[400px]">
+      <Tabs defaultValue="Login" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="Login">Login</TabsTrigger>
           <TabsTrigger value="Signup">SignUp</TabsTrigger>
         </TabsList>
+        
         <TabsContent value="Login">
           <Card>
             <CardHeader>

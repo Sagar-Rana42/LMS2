@@ -12,10 +12,10 @@ export const  generateToken = async(res , id , msg)=>{
         .json({success:false , msg: "user not found  "})
     }
 
-    const token = jwt.sign({id} ,process.env.SECRET_TOKEN, {
+    const token = jwt.sign({userId:user?._id} ,process.env.SECRET_TOKEN, {
         expiresIn : process.env.EXPIRY
     } )
-    // console.log("user = ",user)
+    // console.log("token = ",token)
 
 
     return res

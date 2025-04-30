@@ -1,5 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,11 +13,70 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Loader2 } from "lucide-react";
 
 import React from "react";
+import Course from "./Course";
+import {
+  useUserProfileQuery,
+  useUpdateUserProfileMutation,
+} from "@/features/api/authApi";
 
 function Profile() {
-  const user = false;
+  const [name, setName] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+
+  const { data: userData, isLoading ,refetch } = useUserProfileQuery();
+
+  const [
+    updateUserProfile,
+    {
+      data: updatedData,
+      isLoading: upDatedIsLoading,
+      isError: upDatedIsError,
+      error: upDatedError,
+    },
+  ] = useUpdateUserProfileMutation();
+  console.log("data of updated ", updatedData);
+
+
+  const photoHandler = (e) => {
+    // console.log("target = ", e.target.files)
+    const file = e.target.files[0];
+    // console.log("file path = ", file);
+    if (file) {
+      setPhotoUrl(file);
+    }
+  };
+  const user = userData && userData.user
+  // mutation me square bracket lagate hai
+  // query me curly bracket lagate ahi
+
+  // console.log("data of my profile ", userData);
+
+  const updateProfileHandler = async()=>{
+    const formData = new FormData()
+    formData.append("username",name)
+    formData.append("photoUrl",photoUrl)
+    // console.log(name, photo)
+    await updateUserProfile(formData)
+  }
+  useEffect(()=>{
+    refetch();
+  },[])
+
+  useEffect(() => {
+    if (updatedData) {
+      refetch()
+      toast.success(updatedData?.msg || "Profile updated successfully");
+    } else if (upDatedIsError) {
+      console.log("error ", upDatedError);
+      toast.error(upDatedError?.data?.msg || "Failed to update profile");
+    }
+  }, [updatedData, upDatedIsError]);
+  
+ 
+  
   return (
     <div className="my-24 max-w-4xl mx-auto px-4">
       <h1 className="font-bold text-2xl text-left max-sm:text-center">
@@ -29,7 +90,7 @@ function Profile() {
               src={user?.photoUrl || "https://github.com/shadcn.png"}
               alt="@shadcn"
             />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>profile</AvatarFallback>
           </Avatar>
         </div>
 
@@ -37,25 +98,29 @@ function Profile() {
           <div className="mb-2 ">
             <h2 className="font-semibold text-xl text-slate-300 ">
               Name:
-              <span className="font-normal">Sagar rana</span>
+              <span className="font-normal">{user?.username || "user name" }</span>
             </h2>
           </div>
           <div className="mb-2   ">
             <h2 className="font-semibold text-xl text-slate-300 ">
               email:
-              <span className="font-normal">Sagarrana@gmail.com</span>
+              <span className="font-normal">
+                {user?.email || "xxx@gmail.com"}
+              </span>
             </h2>
           </div>
           <div className="mb-2  ">
             <h2 className="font-semibold text-xl text-slate-300 ">
               Role:
-              <span className="font-normal">Instructor</span>
+              <span className="font-normal">{user?.role.toUpperCase()}</span>
             </h2>
           </div>
           <div>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className='bg-gray-800  rounded-xl'>Edit Profile</Button>
+                <Button className="bg-gray-800  rounded-xl">
+                  Edit Profile
+                </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -71,10 +136,12 @@ function Profile() {
                       Name
                     </Label>
                     <Input
-                      id="name"
-                      value="Pedro Duarte"
+                      id={name}
+                      value={name}
                       className="col-span-3"
                       placeholder="Name"
+                      onChange= {(e) => setName(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
@@ -84,20 +151,46 @@ function Profile() {
                     <Input
                       type="file"
                       id="username"
-                      
                       className="col-span-3"
                       accept="image/*"
+                      onChange={photoHandler}
+                      required
                     />
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit">Save changes</Button>
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    onClick={updateProfileHandler}
+                  >
+                    {upDatedIsLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please
+                        wait
+                      </>
+                    ) : (
+                      "Save changes"
+                    )}
+                  </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
           </div>
         </div>
+      </div>
 
+      <div>
+        <h1 className="font-medium text-lg">Course you are enroll in </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 gap-4 my-5 ">
+          {user && user?.enrolledCourses.length === 0 ? (
+            <h2>you haven't enrolld in any course </h2>
+          ) : (
+            user && user?.enrolledCourses.map((course, index) => (
+              <Course course={course} key={course._id} />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
