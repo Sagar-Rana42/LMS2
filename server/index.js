@@ -17,6 +17,7 @@ app.use(cors({
     credentials:true,
     
 }))
+
 // app.use(cors())
 
 
@@ -35,4 +36,7 @@ connectDB()
 
 
 import userRoute from "./route/user.route.js"
+import courseRoute from "./route/course.route.js"
 app.use('/api/v1/user',userRoute)
+app.use('/api/v1/admin',courseRoute)
+

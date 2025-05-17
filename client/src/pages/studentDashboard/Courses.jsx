@@ -3,11 +3,12 @@ import { Skeleton } from '../../components/ui/skeleton';
 import Course from './Course';
 function Courses() {
 
-    const isLoading = false;
-    const courses = [1,2,3,4,4,5,];
+  const isLoading = false;
+  const courses = [1,2,3,4,4,5,];
+
   return (
     <div 
-     className=' bg-gray-800 max-h-fit '
+     className=' max-h-fit '
     >
         <div className="max-w-7xl mx-auto p-6 pt-20">
           <h2 className="font-bold text-3xl text-center p-10 ">Our Courses</h2>

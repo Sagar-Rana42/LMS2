@@ -40,6 +40,9 @@ const Navbar = () => {
     await logoutUser();
     // refetch();
   }
+
+ 
+
   useEffect(()=>{
     if(isSuccess){
       toast.success(data?.msg || "User log out successfully")
@@ -49,7 +52,7 @@ const Navbar = () => {
   
   return (
     <div className="h-16 backdrop-blur-lg
-     bg-gray-400 border-b  border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10">
+     	bg-[#001005] text-white   fixed top-0 left-0 right-0 duration-300 z-10">
       {/* Desktop */}
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center gap-10 h-full">
         <div className="flex items-center gap-2">
@@ -97,11 +100,12 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={()=>(navigate('/login'))}>
+            <div className="flex items-center gap-2 ">
+              <Button variant="outline" onClick={()=>(navigate('/login'))}
+                className='rounded  font-bold bg-gradient-to-r from-amber-500 via-amber-500 to-amber-600 text-transparent  text-black hover:bg-amber-600'>
                 Login
               </Button>
-              <Button >Signup</Button>
+              <Button className='rounded font-bold    hover:bg-amber-400 hover:text-black duration-300' >Signup</Button>
             </div>
           )}
           

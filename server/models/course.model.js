@@ -18,7 +18,7 @@ const courseSchema = new Schema({
     },
     courseLevel:{
         type:String,
-        enum:["begineer" , ""]
+        enum:["begineer" , "medium" , "easy"]
     },
     courseThumbnail:{
         type:String,
@@ -29,6 +29,9 @@ const courseSchema = new Schema({
             ref:'User'
         },
     ],
+    coursePrice:{
+        type:Number
+    },
     lectures:[
         {
             type:mongoose.Schema.Types.ObjectId,
@@ -47,4 +50,7 @@ const courseSchema = new Schema({
 
 },{timestamps:true})
 
-export const Course = model("Course" , courseSchema);
+const Course = model("Course" , courseSchema);
+
+
+ export default Course

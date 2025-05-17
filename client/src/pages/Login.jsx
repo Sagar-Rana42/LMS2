@@ -18,7 +18,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Login() {
@@ -93,33 +93,32 @@ export default function Login() {
     await action(inputdata);
   };
 
+  
   useEffect(() => {
-    if(registerData && registerIsSuccess){
-      toast.success(registerData?.msg || "user register successfully")
+    if (registerIsSuccess && registerData) {
+      toast.success(registerData?.msg || "User registered successfully");
+    }
+  }, [registerIsSuccess, registerData]);
+  useEffect(() => {
+    if (loginIsSuccess && loginData) {
+      toast.success(loginData?.msg || "Login successful");
+      navigate("/");
+    }
+  }, [loginIsSuccess, loginData]);
+  useEffect(() => {
+    if (registerIsError) {
+      toast.error(registerErrorData?.data?.msg || "Signup failed");
+    }
+  }, [registerIsError, registerErrorData]);
 
-    }
-    if(loginData && loginIsSuccess){
-      toast.success(loginData?.msg || "user login successfull")
-      navigate("/")
-    }
-    if(registerIsError){
-      toast.error(registerErrorData?.data?.msg || " signUp fail")
-    }
-    if(loginIsError){
-      console.log("error form login page ", loginErrorData)
-      toast.error(loginErrorData?.data?.msg || "login  failed")
-    }
-    // toast("please wait")
-  }, [
-    loginIsLoading,
-    registerIsLoading,
-    loginData,
-    registerData,
-    loginIsError,
-    registerIsError,
-    loginErrorData,
-    registerErrorData
-  ]);
+  useEffect(() => {
+    if (loginIsError) {
+        console.log("Login error: ", loginErrorData);
+        toast.error(loginErrorData?.data?.msg || "Login failed");
+      }
+  }, [loginIsError, loginErrorData]);
+
+
 
   return (
     <div className=" w-full flex  justify-center mt-40">

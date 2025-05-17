@@ -4,11 +4,16 @@ import { Button } from "./components/ui/button";
 import Login from "./pages/login";
 import Navbar from "./components/Navbar";
 import HeroSection from "./pages/ACCComponent/heroSection/HeroSection.jsx";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import Home from "./pages/home/Home";
 import MyLearning from "./pages/studentDashboard/MyLearning";
 import Profile from "./pages/studentDashboard/Profile";
+import Sidebar from "./pages/teacherDashboard/Sidebar";
+import Dashboard from "./pages/teacherDashboard/Dashboard";
+import CourseTable from "./pages/teacherDashboard/course/CourseTable";
+import CreateCourse from "./pages/teacherDashboard/course/CreateCourse";
+import EditCourse from "./pages/teacherDashboard/course/EditCourse";
 // import HeroSection from "./pages/ACCComponent/heroSection/HeroSection.jsx";
 
 const appRouter = createBrowserRouter([
@@ -31,8 +36,34 @@ const appRouter = createBrowserRouter([
       {
         path:"profile",
         element:<Profile/>
+      },
+      // admin route start here 
+      {
+        path:"admin",
+        element:<Sidebar/>,
+        children:[
+          {
+            path:"dashboard",
+            element:<Dashboard/>
+          },
+          {
+            path:"course",
+            element:<CourseTable/>
+          },
+          {
+            path:"course/create",
+            element:<CreateCourse/>
+          },
+          {
+            path:"course/:courseId",
+            element:<EditCourse/>
+          }
+        
+          
+        ]
       }
     ],
+    
   },
 ]);
 
