@@ -1,51 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectValue,
-} from "@/components/ui/select";
-import { SelectTrigger } from "@radix-ui/react-select";
-import { useNavigate } from "react-router";
-import { Loader2 } from "lucide-react";
-import { useCreateCourseMutation } from "@/features/api/courseApi";
-import { toast } from "sonner";
+import React from 'react'
 
-function CreateCourse() {
-  const [courseTitle , setCourseTitle] = useState();
-  const [category , setCategory] = useState();
-
-  const [CreateCourse , {data,isLoading, isSuccess, error,isError}] = useCreateCourseMutation();
-  console.log("error = " ,error?.data)
-  
-  const navigate = useNavigate()
- 
-
-  const createCourseHandler = async()=>{
-    // console.log(courseTitle,category)
-    await CreateCourse({courseTitle,category});
-  }
-  const getSelectedValue = async(value)=>{
-    setCategory(value)
-  }
-  // for visualisazing 
-  useEffect(()=>{
-
-    if(isSuccess){
-      toast.success(data?.msg || "Course created " )
-      navigate("/admin/course")
-    }
-    if(isError){
-      toast.error(error?.msg || "failed to create ")
-    }
-
-  },[isError,isSuccess,error])
-  
+function CreateLecture() {
   return (
     <div className="flex-1 mx-10">
       <div className="mb-4">
@@ -108,7 +63,7 @@ function CreateCourse() {
       </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default CreateCourse;
+export default CreateLecture

@@ -30,7 +30,7 @@ import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const {user} = useSelector(store=>store.auth);
-  console.log("user = ",user)
+  // console.log("user = ",user)
 
   const role = "instructor"
   const navigate = useNavigate()

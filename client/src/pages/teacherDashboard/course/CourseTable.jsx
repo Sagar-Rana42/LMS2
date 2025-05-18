@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 function CourseTable() {
   const {data , isLoading , isError,error} = useGetAllCoursesQuery();
-  console.log("data = ",data)
+  // console.log("data = ",data)
 
 
   const navigate = useNavigate();

@@ -14,6 +14,7 @@ import Dashboard from "./pages/teacherDashboard/Dashboard";
 import CourseTable from "./pages/teacherDashboard/course/CourseTable";
 import CreateCourse from "./pages/teacherDashboard/course/CreateCourse";
 import EditCourse from "./pages/teacherDashboard/course/EditCourse";
+import CreateLecture from "./pages/teacherDashboard/lecture/CreateLecture";
 // import HeroSection from "./pages/ACCComponent/heroSection/HeroSection.jsx";
 
 const appRouter = createBrowserRouter([
@@ -57,6 +58,10 @@ const appRouter = createBrowserRouter([
           {
             path:"course/:courseId",
             element:<EditCourse/>
+          },
+          {
+            path:"lecture",
+            element:<CreateLecture/>
           }
         
           

@@ -31,11 +31,29 @@ export const courseApi = createApi({
 
             
         }),
+        editCourse:builder.mutation({
+            query:({formData, courseId})=>({
+              url:`/edit-course/${courseId}`,
+              method:"PUT",
+              body:formData,
+
+            }),
+            invalidatesTags:["refetch-creator-course"  ]
+        }),
+        getSingleCourse:builder.query({
+            query:(courseId)=>({
+                url:`/get-course/${courseId}`,
+                method:"GET"
+            }),
+            invalidatesTags:["refetch-creator-course"  ]
+        })
     })
     
 })
 export const {
     useCreateCourseMutation,
-    useGetAllCoursesQuery 
+    useGetAllCoursesQuery ,
+    useEditCourseMutation,
+    useGetSingleCourseQuery
 
 } = courseApi;

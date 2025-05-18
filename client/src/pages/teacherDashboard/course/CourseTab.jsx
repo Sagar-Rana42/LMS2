@@ -6,15 +6,28 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEditCourseMutation ,useGetSingleCourseQuery} from '@/features/api/courseApi';
+import { toast } from 'sonner';
 
 
 
 function CourseTab() {
+
     const isPublished = true;
-    const isLoading = false;
+    // const isLoading = false;
     const navigate = useNavigate();
+    const {courseId} = useParams();
+    // const courseId = param?.courseId;
+
+
+    const {data:courseData , isLoading:courseIsLoading , isError:courseIsError , error:courseError} = useGetSingleCourseQuery(courseId , {refetchOnMountOrArgChange:true});
+    console.log("course data " , courseData)
+    // const 
+    console.log("course data course  " , courseData?.course)
+    const [editCourse,{data,isLoading , isError , error , isSuccess}] = useEditCourseMutation();
+    // console.log("data= " , data)
 
     const [input , setInput] = useState({
         courseTitle:"",
@@ -40,8 +53,7 @@ function CourseTab() {
             category: value,
         }));
     };
-
-    
+ 
     const courseLevel = (level)=>{
         setInput({...input, courseLevel:level})
     }
@@ -57,11 +69,49 @@ function CourseTab() {
         fileReader.onloadend = ()=>setPreviewThumbnail(fileReader.result)
         fileReader.readAsDataURL(file);
     }
-
-    const courseUpdateHandler = ()=>{
-        console.log("all data = " , input)
-    }
     
+    const courseUpdateHandler = async()=>{
+        const formData = new FormData();
+        formData.append("courseTitle",input?.courseTitle)
+        formData.append("subTitle",input?.subTitle)
+        formData.append("category",input?.category)
+        formData.append("description",input?.description)
+        formData.append("courseLevel",input?.courseLevel)
+        formData.append("coursePrice",input?.coursePrice)
+        formData.append("courseThumbnail",input?.courseThumbnail)
+
+        await editCourse({formData,courseId})
+
+    }
+
+    useEffect(()=>{
+        if(courseData?.course){
+            setInput({
+                courseTitle:courseData?.course?.courseTitle,
+                subTitle:courseData?.course?.subTitle,
+                category:courseData?.course?.category,
+                description:courseData?.course?.description,
+                courseLevel:courseData?.course?.courseLevel,
+                coursePrice:courseData?.course?.coursePrice,
+                courseThumbnail:courseData?.course?.courseThumbnail
+            })
+        }
+    },[courseData])
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success(data?.msg || "Course updated successfully");
+            navigate("/admin/course");
+        }
+        if (isError) {
+            toast.error(error?.msg || "Failed to update");
+        }
+    }, [isSuccess, isError, data, error, navigate]);
+
+    if(courseIsLoading){
+        return <><h1 className='text-4xl font-semibold'>Loading.....</h1></>
+
+    }
   return (
    <Card>
         <CardHeader className="">
@@ -123,7 +173,7 @@ function CourseTab() {
             <div className='flex items-center gap-5 '>
                 <div className=''>
                     <Label>Category</Label>
-                    <Select  onValueChange={selectCategory} className='rounded border-yellow-100 bg-gray-400 z-10'>
+                    <Select  value={input?.category} onValueChange={selectCategory} className='rounded border-yellow-100 bg-gray-400 z-10'>
                                 <SelectTrigger className="w-[180px]" id="category">
                                 <SelectValue placeholder="Select a category " className='rounded border-yellow-100' />
                                 </SelectTrigger>
@@ -149,7 +199,7 @@ function CourseTab() {
 
                 <div>
                     <Label>Course label</Label>
-                    <Select  onValueChange={courseLevel} className='rounded border-yellow-100 bg-gray-400 z-10'>
+                    <Select value={input?.courseLevel} onValueChange={courseLevel} className='rounded border-yellow-100 bg-gray-400 z-10'>
                         <SelectTrigger className="w-[180px]" id="category">
                         <SelectValue placeholder="Select a course level" className='rounded border-yellow-100' />
                         </SelectTrigger>
