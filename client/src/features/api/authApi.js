@@ -32,7 +32,7 @@ export const authApi = createApi({
                     console.log("Login success:", result);
                     
                     // Ensure result.data exists before dispatching
-                    if (result.data.user) {
+                    if (result?.data?.user) {
                         dispatch(userLoggedIn({ user: result.data.user }));
                     }
                 } catch (error) {

@@ -23,9 +23,9 @@ function CourseTab() {
 
 
     const {data:courseData , isLoading:courseIsLoading , isError:courseIsError , error:courseError} = useGetSingleCourseQuery(courseId , {refetchOnMountOrArgChange:true});
-    console.log("course data " , courseData)
+    // console.log("course data " , courseData)
     // const 
-    console.log("course data course  " , courseData?.course)
+    // console.log("course data course  " , courseData?.course)
     const [editCourse,{data,isLoading , isError , error , isSuccess}] = useEditCourseMutation();
     // console.log("data= " , data)
 

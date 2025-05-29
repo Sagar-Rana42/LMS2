@@ -1,11 +1,44 @@
-import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { useCreateLectureMutation, useGetAllLecturesQuery } from '@/features/api/courseApi'
+import { Loader2 } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
+import Lecture from './Lecture'
 
 function CreateLecture() {
+    // const isLoading = false;
+    const [lectureTitle , setLectureTitle] = useState();
+    const navigate = useNavigate();
+
+    const {courseId} = useParams();
+    const [createLecture , {data , isLoading , isSuccess , isError , error}] = useCreateLectureMutation();
+
+    const {data:lectureData , isLoading:lectureIsLoading , isError:lectureIsError , error:lectureError , refetch} = useGetAllLecturesQuery({courseId});
+    // console.log("lecture data = " , lectureData)
+    const createLectureHandler = async ()=>{
+      await createLecture({lectureTitle,courseId})
+      
+    }
+   
+    useEffect(()=>{
+      if(isSuccess){
+        toast.success(data?.msg || "lecture created successfully")
+        refetch()
+      }
+      else if(isError){
+        toast.error(error?.data?.message || "failed to create lecture" )
+      }
+    },[isSuccess,error])
+
+    
   return (
     <div className="flex-1 mx-10">
       <div className="mb-4">
         <h1 className="font-bold text-xl">
-          Lets add course, add some basic course details for your new course
+          Lets add lecture , add some basic detail for your new lecture
         </h1>
         <p className="text-sm">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Possimus,
@@ -17,50 +50,45 @@ function CreateLecture() {
           <Label>Title</Label>
           <Input
             type="text"
-            placeholder="Your Course Name"
-            value={courseTitle}
+            placeholder="Lecture Name"
+            value={lectureTitle}
+            onChange = {(e)=>setLectureTitle(e.target?.value)}
             className='rounded  border-[#2a2a2a]'
-            onChange = {(e)=>setCourseTitle(e.target.value)}
+            // onChange = {(e)=>setCourseTitle(e.target.value)}
             required = {true}
           />
         </div>
-        <div className="flex flex-col gap-2 rounded  border-2 border-[#2a2a2a] ">
-          <Label  htmlFor="category">Category</Label>
-          <Select  onValueChange={getSelectedValue} className='rounded border-yellow-100 bg-gray-400 z-10'>
-            <SelectTrigger className="w-[180px]" id="category">
-              <SelectValue placeholder="Select a category " className='rounded border-yellow-100' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup className="bg-white text-black">
-                <SelectLabel>Category</SelectLabel>
-                <SelectItem  value="Next JS">Next JS</SelectItem>
-                <SelectItem  value="Data Science">Data Science</SelectItem>
-                <SelectItem  value="Frontend Development">Frontend Development</SelectItem>
-                <SelectItem  value="Fullstack Development">Fullstack Development</SelectItem>
-                <SelectItem  value="MERN Stack Development">MERN Stack Development</SelectItem>
-                <SelectItem  value="Javascript">Javascript</SelectItem>
-                <SelectItem  value="Python">Python</SelectItem>
-                <SelectItem  value="Docker">Docker</SelectItem>
-                <SelectItem  value="MongoDB">MongoDB</SelectItem>
-                <SelectItem  value="HTML">HTML</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-      </div>
+        
       <div className="space-x-2 -z-10">
         <Button
-        onClick={()=>navigate("/admin/course")}
+        onClick={()=>navigate(`/admin/course/${courseId}`)}
         
-        className='bg-yellow-500 rounded duration-500'>Back</Button>
+        className='bg-yellow-500 rounded duration-500'>Back to course </Button>
 
-        <Button disabled={isLoading} onClick={createCourseHandler} className='bg-green-400 rounded duration-500'>
+        <Button disabled={isLoading} onClick={createLectureHandler} className='bg-green-400 rounded duration-500'>
         {
           isLoading ? <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
-          </>:"Create"
+          </>:"Create lecture"
         }
         </Button>
       </div>
+      </div>
+      <div className='mt-10'>
+        {
+          lectureIsLoading ? (<p>Loading...</p>) : 
+          lectureIsError ? (<p>Failed to load lectures...</p>) : 
+          lectureData?.lectures?.length === 0 ? <p>No lecture available for this course </p> :
+          (
+            lectureData?.lectures?.map((lecture , index)=>(
+              <Lecture key={lecture?._id} lecture={lecture} courseId={courseId} index={index}/>
+            ))
+          
+        )
+
+          
+        }
+       
       </div>
     </div>
   )

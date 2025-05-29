@@ -6,7 +6,7 @@ const COURSE_URL = "http://localhost:4000/api/v1/admin";
 export const courseApi = createApi({
     
     reducerPath:"courseApi",
-    tagTypes:["refetch-creator-course"],
+    tagTypes:["refetch-creator-course","refetch-lecture"],
     baseQuery:fetchBaseQuery({
         baseUrl:COURSE_URL,
         credentials:"include"
@@ -46,7 +46,44 @@ export const courseApi = createApi({
                 method:"GET"
             }),
             invalidatesTags:["refetch-creator-course"  ]
-        })
+        }),
+        createLecture:builder.mutation({
+            query:({lectureTitle,courseId})=>({
+                url:`/get-course/${courseId}/create-Lecture`,
+                method:"POST",
+                body:{lectureTitle}
+            })
+        }),
+        getAllLectures:builder.query({
+            query:({courseId})=>({
+                url:`/get-course/${courseId}/get-all-lecture`,
+                method:"GET"
+            }),
+            providesTags:["refetch-lecture"]
+        }),
+        editLecture:builder.mutation({
+            query:({courseId ,lectureId ,lectureTitle ,videoInfo ,  isPreviewFree})=>({
+                url:`get-course/${courseId}/lecture/${lectureId}`,
+                method:"POST",
+                body:{lectureTitle ,videoInfo ,  isPreviewFree}
+            })
+            
+        }),
+        removeLecture:builder.mutation({
+            query:({lectureId})=>({
+                url:`/lecture/${lectureId}`,
+                method:"DELETE",
+            }),
+            invalidatesTags:["refetch-lecture"]
+        }),
+        getLectureById:builder.query({
+            query:(lectureId)=>({
+                url:`/lecture/${lectureId}`,
+                method:"GET"
+            })
+            
+        }),
+
     })
     
 })
@@ -54,6 +91,11 @@ export const {
     useCreateCourseMutation,
     useGetAllCoursesQuery ,
     useEditCourseMutation,
-    useGetSingleCourseQuery
+    useGetSingleCourseQuery,
+    useCreateLectureMutation,
+    useGetAllLecturesQuery,
+    useEditLectureMutation,
+    useRemoveLectureMutation,
+    useGetLectureByIdQuery,
 
 } = courseApi;
