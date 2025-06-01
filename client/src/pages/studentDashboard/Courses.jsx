@@ -1,12 +1,20 @@
 import React from 'react'
 import { Skeleton } from '../../components/ui/skeleton';
 import Course from './Course';
+import { useGetPublishedCourseQuery } from '@/features/api/courseApi';
 function Courses() {
 
-  const isLoading = false;
+  // const isLoading = false;
   const courses = [1,2,3,4,4,5,];
+  const {data , isLoading , isSuccess , error ,isError} = useGetPublishedCourseQuery()
+  console.log("data = " , data)
+
+  if(isError){
+    return <h1>Some error occur.....</h1>
+  }
 
   return (
+    
     <div 
      className=' max-h-fit '
     >
@@ -17,7 +25,7 @@ function Courses() {
               Array.from({ length: 8 }).map((_, index) => (
                 <SkeletonDemo key={index} />
               ))
-            ) : (courses.map((course , index)=><Course key={index}/>))
+            ) : (data?.courses && data?.courses.map((course , index)=><Course key={index} course={course}/>))
             }
           </div>
       </div>

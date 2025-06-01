@@ -77,6 +77,8 @@ function LectureTab() {
     useEffect(()=>{
         if(lectureData){
             setLectureTitle(lecture?.lectureTitle)
+            setUploadVideoInfo(lecture?.videoInfo)
+            setIsPreviewFree(lecture?.isPreviewFree)
             
         }
     },[])

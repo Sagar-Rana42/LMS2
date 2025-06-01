@@ -415,6 +415,7 @@ export const publish = async(req,res)=>{
         return res
         .status(200)
         .json({
+            success:true,
             msg:`course get ${statusMessage}`
         })
 
@@ -423,7 +424,37 @@ export const publish = async(req,res)=>{
         return res
         .status(500)
         .json({
+            success:false,
             msg:"Failed to publish "
+        })
+    }
+}
+
+export const getPublishedCourse = async (_,res)=>{
+    try {
+        // const {courseId} = req.params;
+        const courses = await Course.find({isPublished:true}).populate({path:"creator" , select:"username photoUrl"});
+        // console.log("courses = " , courses)
+        if(!courses){
+            return res
+            .status(400)
+            .json({
+                msg:"Course not found"
+            })
+        }
+        return res
+        .status(200)
+        .json({
+            courses, 
+            
+        })
+
+    } catch (error) {
+        console.log("error in publish " , error.message)
+        return res
+        .status(500)
+        .json({
+            msg:"failed to get course , due to internal server error"
         })
     }
 }

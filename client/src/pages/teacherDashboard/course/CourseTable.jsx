@@ -19,7 +19,6 @@ function CourseTable() {
   const {data , isLoading , isError,error} = useGetAllCoursesQuery();
   // console.log("data = ",data)
 
-
   const navigate = useNavigate();
   return (
     

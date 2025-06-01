@@ -8,26 +8,23 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Loader2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEditCourseMutation ,useGetSingleCourseQuery} from '@/features/api/courseApi';
+import { useEditCourseMutation ,useGetSingleCourseQuery, usePublishCourseMutation} from '@/features/api/courseApi';
 import { toast } from 'sonner';
 
 
 
 function CourseTab() {
 
-    const isPublished = true;
+    // const isPublished = true;
     // const isLoading = false;
     const navigate = useNavigate();
     const {courseId} = useParams();
     // const courseId = param?.courseId;
 
 
-    const {data:courseData , isLoading:courseIsLoading , isError:courseIsError , error:courseError} = useGetSingleCourseQuery(courseId , {refetchOnMountOrArgChange:true});
-    // console.log("course data " , courseData)
-    // const 
-    // console.log("course data course  " , courseData?.course)
+    const {data:courseData , isLoading:courseIsLoading , isError:courseIsError , error:courseError ,refetch } = useGetSingleCourseQuery(courseId , {refetchOnMountOrArgChange:true});
     const [editCourse,{data,isLoading , isError , error , isSuccess}] = useEditCourseMutation();
-    // console.log("data= " , data)
+    const [publishCourse , {data:publishData , isLoading:publishIsLoading }] = usePublishCourseMutation();
 
     const [input , setInput] = useState({
         courseTitle:"",
@@ -84,6 +81,19 @@ function CourseTab() {
 
     }
 
+    const publishHandler = async(action)=>{
+        try {
+          const res =   await publishCourse({courseId , query:action})
+
+          if(res?.data?.success){
+            toast.success(res?.data?.msg);
+            refetch()
+          }
+        } catch (error) {
+            toast.error(error?.message || "failed to do action")
+        }
+    }
+
     useEffect(()=>{
         if(courseData?.course){
             setInput({
@@ -124,13 +134,14 @@ function CourseTab() {
                             <CardDescription>Make change to your here. click save when you are done   </CardDescription>
                 </div>
 
-                <div className='space-x-2'>
-                    <Button variant='outline'>
+                <div className='space-x-2 '>
+
+                    <Button onClick={()=>publishHandler(courseData?.course.isPublished?"false" :"true" )} disabled={courseData?.course?.lectures?.length === 0} className='bg-green-400  hover:bg-green-600 duration-300 rounded text-black'>
                         {
-                            isPublished ? "Unpublish" : "Publish"
+                            courseData?.course?.isPublished ? "Unpublish" : "Publish"
                         }
                     </Button>
-                    <Button>
+                    <Button className='rounded bg-red-500 hover:bg-red-700 duration-300 md:mt-2'>
                         Remove Course
                     </Button>
                 </div>

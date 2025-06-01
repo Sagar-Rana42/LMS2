@@ -1,6 +1,6 @@
 import { Menu, School } from "lucide-react";
 import React, { useEffect } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 
 import {
@@ -57,11 +57,11 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center gap-10 h-full">
         <div className="flex items-center gap-2">
           <School size={"30"} />
-          {/* <Link to="/"> */}
+          <Link to="/">
             <h1 className="hidden md:block font-extrabold text-2xl">
               Codesphare
             </h1>
-          {/* </Link> */}
+          </Link>
         </div>
         {/* User icons and dark mode icon  */}
         <div className="flex items-center gap-8 text-white">

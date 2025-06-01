@@ -53,7 +53,7 @@ export const authApi = createApi({
                     
                     // Ensure result.data exists before dispatching
                     if (result.data.user) {
-                        dispatch(userLoggedIn({ user: result.data.user }));
+                        dispatch(userLoggedIn({ user: result?.data?.user }));
                     }
                 } catch (error) {
                     console.log("error from query pofile  authApi " + error.message )
