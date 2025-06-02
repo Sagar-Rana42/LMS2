@@ -16,6 +16,7 @@ import CreateCourse from "./pages/teacherDashboard/course/CreateCourse";
 import EditCourse from "./pages/teacherDashboard/course/EditCourse";
 import CreateLecture from "./pages/teacherDashboard/lecture/CreateLecture";
 import EditLecture from "./pages/teacherDashboard/lecture/EditLecture";
+import CourseDetails from "./pages/studentDashboard/CourseDetails";
 // import HeroSection from "./pages/ACCComponent/heroSection/HeroSection.jsx";
 
 const appRouter = createBrowserRouter([
@@ -39,6 +40,12 @@ const appRouter = createBrowserRouter([
         path:"profile",
         element:<Profile/>
       },
+      {
+        path:"course-details/:courseId",
+        element:<CourseDetails/>
+      },
+
+
       // admin route start here 
       {
         path:"admin",
