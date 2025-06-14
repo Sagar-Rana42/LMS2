@@ -1,10 +1,13 @@
 import React from "react";
 import Course from "./Course";
+import { useGetAllPurchasedCourseQuery } from "@/features/api/purchaseApi";
 
 function MyLearning() {
-  const isLoading = false;
+  
 
-  const myCourse = [];
+  const {data , isLoading , isError , isSuccess , error} = useGetAllPurchasedCourseQuery();
+  console.log("data - " , data)
+  // const {allPurchasedCourse} = data;
 
   return ( 
     
@@ -15,12 +18,12 @@ function MyLearning() {
           <div className="my-5">
             {isLoading ? (
               <LearningSkelaton />
-            ) : myCourse.length === 0 ? (
+            ) : data?.allPurchasedCourse?.length === 0 ? (
               <p > Yoy are not enrolled in any cousrse</p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-col-3  gap-4">
                 {
-                  [1,2,3,4].map((course , index)=><Course key={index}  />)
+                  data?.allPurchasedCourse?.map((course , index)=><Course key={index}  />)
                   
                 }
               </div>

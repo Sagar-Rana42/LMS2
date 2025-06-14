@@ -17,6 +17,7 @@ import EditCourse from "./pages/teacherDashboard/course/EditCourse";
 import CreateLecture from "./pages/teacherDashboard/lecture/CreateLecture";
 import EditLecture from "./pages/teacherDashboard/lecture/EditLecture";
 import CourseDetails from "./pages/studentDashboard/CourseDetails";
+import CourseProgress from "./pages/studentDashboard/CourseProgress";
 // import HeroSection from "./pages/ACCComponent/heroSection/HeroSection.jsx";
 
 const appRouter = createBrowserRouter([
@@ -43,6 +44,10 @@ const appRouter = createBrowserRouter([
       {
         path:"course-details/:courseId",
         element:<CourseDetails/>
+      },
+      {
+        path:"course-progress/:courseId",
+        element:<CourseProgress/>
       },
 
 
@@ -75,16 +80,14 @@ const appRouter = createBrowserRouter([
             path:"course/:courseId/lecture/:lectureId",
             element:<EditLecture/>
           }
-        
-          
         ]
       }
     ],
-    
   },
 ]);
 
 function App() {
+
   // const [count, setCount] = useState(0);
 
   return (

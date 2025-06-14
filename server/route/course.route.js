@@ -19,7 +19,7 @@ import {
 const router = Router();
 
 router.route("/course/create").post(isAuthenticated,createCourse)
-router.route("/course").get(isAuthenticated,getAllCourses)
+router.route("/course").get(getAllCourses)
 router.route("/edit-course/:courseId").put(isAuthenticated,upload.single("courseThumbnail"),editCourse)
 router.route("/get-course/:courseId").get(isAuthenticated,getCourseById)
 router.route("/get-course/:courseId/create-lecture").post(isAuthenticated,createLecture)
