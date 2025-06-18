@@ -1,13 +1,32 @@
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
+
 
 function Dashboard() {
   return (
     <div className=" grid gap-6 grid-cols-1 sm:grid-cols-2
      md:grid-cols-3 lg:grid-cols-4  ">
-      <Card className="bg-white text-black">
-        <CardTitle>Total Sales</CardTitle>
+      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <CardHeader>
+
+          <CardTitle>Total Sales</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-bold text-blue-600">400</p>
+        </CardContent>
+
       </Card>
+      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <CardHeader>
+
+          <CardTitle>Total Revenue</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-bold text-blue-600">1200</p>
+        </CardContent>
+
+      </Card>
+
     </div>
   );
 }

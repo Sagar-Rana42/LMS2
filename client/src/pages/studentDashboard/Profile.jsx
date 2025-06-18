@@ -21,12 +21,14 @@ import {
   useUserProfileQuery,
   useUpdateUserProfileMutation,
 } from "@/features/api/authApi";
+// import { data } from "react-router";
 
 function Profile() {
   const [name, setName] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
 
   const { data: userData, isLoading ,refetch } = useUserProfileQuery();
+  console.log("data = - ", userData)
 
   const [
     updateUserProfile,
@@ -37,7 +39,7 @@ function Profile() {
       error: upDatedError,
     },
   ] = useUpdateUserProfileMutation();
-  console.log("data of updated ", updatedData);
+  // console.log("data of updated ", updatedData);
 
 
   const photoHandler = (e) => {

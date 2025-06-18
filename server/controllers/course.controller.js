@@ -43,7 +43,10 @@ export const createCourse = async(req,res)=>{
 export const getAllCourses = async(req,res)=>{
     try {
         const adminId = req?.id;
-        const courses = await Course.find({creator:adminId})
+        // console.log("id = ",adminId)
+        const courses = await Course.find({})
+
+        console.log("courses = ", courses)
         if(!courses){
             return res
             .status(400)

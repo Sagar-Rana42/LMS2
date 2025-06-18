@@ -94,7 +94,7 @@ const Navbar = () => {
                 {user?.role === "instructor" && (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                    <DropdownMenuItem> <Link to='/dashboard'>Dashboard</Link></DropdownMenuItem>
                   </>
                 )}
               </DropdownMenuContent>
@@ -112,50 +112,103 @@ const Navbar = () => {
         </div>
       </div>
       {/* Mobile device  */}
-      <div className="flex md:hidden items-center justify-between px-4 h-full">
-        <h1 className="font-extrabold text-2xl">E-learning</h1>
-        <MobileNavbar/>
-      </div>
+     {/* Mobile device */}
+        <div className="flex md:hidden items-center justify-between px-4 h-full">
+          <h1 className="font-extrabold text-2xl">Codesphare</h1>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                size="icon"
+                className="rounded-full hover:bg-gray-500"
+                variant="outline"
+              >
+                <Menu size={30} /> {/* Increased icon size */}
+              </Button>
+            </SheetTrigger>
+
+            <SheetContent className="flex flex-col backdrop-blur-lg bg-gray-800 text-white">
+              <SheetHeader className="flex flex-row items-center justify-between mt-2">
+                <SheetTitle>
+                  <SheetClose asChild>
+                    <Link to="/">Codesphare</Link>
+                  </SheetClose>
+                </SheetTitle>
+              </SheetHeader>
+
+              <Separator className="mr-2" />
+
+              <nav className="flex flex-col space-y-4 mt-4">
+                <SheetClose asChild>
+                  <Link to="/my-learning">My Learning</Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link to="/profile">Edit Profile</Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <p onClick={logoutHandler} className="hover:cursor-pointer">
+                    Log out
+                  </p>
+                </SheetClose>
+              </nav>
+
+              {user?.role === "instructor" && (
+                <SheetFooter className="mt-4">
+                  <SheetClose asChild>
+                    <Button
+                      type="submit"
+                      className="bg-green-400 rounded text-black hover:bg-green-700 hover:text-gray-700 duration-300"
+                    >
+                      Dashboard
+                    </Button>
+                  </SheetClose>
+                </SheetFooter>
+              )}
+            </SheetContent>
+          </Sheet>
+        </div>
+
     </div>
   );
 };
 
 export default Navbar;
 
-const MobileNavbar = () => {
+// const MobileNavbar = () => {
   
-  const role = "instructor"
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button
-          size="icon"
-          className="rounded-full hover:bg-gray-500"
-          variant="outline"
-        >
-          <Menu />
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="flex flex-col">
-        <SheetHeader className="flex flex-row items-center justify-between mt-2">
-          <SheetTitle> <Link to="/">E-Learning</Link></SheetTitle>
-          
-        </SheetHeader>
-        <Separator className="mr-2" />
-        <nav className="flex flex-col space-y-4">
-          <Link to="/my-learning">My Learning</Link>
-          <Link to="/profile">Edit Profile</Link>
-          {/* <Link to="/logout">Edit Profile</Link> */}
-          <p >Log out</p>
-        </nav>
-        {role === "instructor" && (
-          <SheetFooter>
-            <SheetClose asChild>
-              <Button type="submit">Dashboard</Button>
-            </SheetClose>
-          </SheetFooter>
-         )}
-      </SheetContent>
-    </Sheet>
-  );
-};
+//   const role = "instructor"
+//   return (
+//             <Sheet>
+//           <SheetTrigger asChild>
+//             <Button
+//               size="icon"
+              
+//               className="rounded-full hover:bg-gray-500"
+//               variant="outline"
+//             >
+//               <Menu />
+//             </Button>
+//           </SheetTrigger>
+//           <SheetContent className="flex flex-col">
+//             <SheetHeader className="flex flex-row items-center justify-between mt-2">
+//               <SheetTitle> <Link to="/">Codesphare</Link></SheetTitle>
+              
+//             </SheetHeader>
+//             <Separator className="mr-2" />
+//             <nav className="flex flex-col space-y-4">
+//               <Link to="/my-learning">My Learning</Link>
+//               <Link to="/profile">Edit Profile</Link>
+//               {/* <Link to="/logout">Log out</Link> */}
+//               <p onClick={logoutHandler} className="hover:cursor-pointer" >Log out</p>
+//             </nav>
+//             {user?.role === "instructor" && (
+//               <SheetFooter>
+//                 <SheetClose asChild>
+//                   <Button type="submit" className='bg-green-400 rounded text-black hover:bg-green-700 hover:text-gray-700 duration-300'>Dashboard</Button>
+//                 </SheetClose>
+//               </SheetFooter>
+//             )}
+//           </SheetContent>
+//         </Sheet>
+//     );
+//   };
+

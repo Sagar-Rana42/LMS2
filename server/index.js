@@ -39,8 +39,10 @@ import userRoute from   "./route/user.route.js"
 import courseRoute from "./route/course.route.js"
 import videoUpload from "./route/video.route.js"
 import purchaseRoute  from "./route/purchase.route.js"
+import courseProgress from "./route/courseProgress.route.js"
 app.use('/api/v1/user',userRoute)
 app.use('/api/v1/admin',courseRoute)
 app.use('/api/v1/media',videoUpload)
 app.use('/api/v1/purchase',purchaseRoute)
+app.use('/api/v1/course',courseProgress);
 

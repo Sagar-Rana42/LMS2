@@ -117,7 +117,7 @@ export const logOut = async(_,res)=>{
 export const profile= async(req,res)=>{
     try {
         
-        const user = await User.findById(req.id).select("-password")
+        const user = await User.findById(req.id).populate({path:"enrolledCourses"}).select("-password -__v")
         // console.log("profile = ", user)
         if(!user){
             return res.

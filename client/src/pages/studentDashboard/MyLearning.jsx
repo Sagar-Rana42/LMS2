@@ -6,6 +6,7 @@ function MyLearning() {
   
 
   const {data , isLoading , isError , isSuccess , error} = useGetAllPurchasedCourseQuery();
+  // const {courseId} = data;
   console.log("data - " , data)
   // const {allPurchasedCourse} = data;
 
@@ -23,7 +24,7 @@ function MyLearning() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-col-3  gap-4">
                 {
-                  data?.allPurchasedCourse?.map((course , index)=><Course key={index}  />)
+                  data?.allPurchasedCourse?.map((course , index)=><Course key={index} course={course?.courseId} />)
                   
                 }
               </div>
