@@ -16,7 +16,7 @@ function CourseDetails() {
   const {data , isLoading , isSuccess , isError , error} = useGetCourseDetailWithStatusQuery(courseId);
   if(isLoading) return <h1>Loading...</h1>
   if(isError) return <h1>Failed to load data , please try again</h1>
-  const {course , purchased} = data;
+  const {course , purchased } = data;
 
   console.log("data withdetails = " , data)
 
@@ -24,6 +24,7 @@ function CourseDetails() {
     if(purchased){
       navigateTo(`/course-progress/${courseId}`)
     }
+    
    
   }
 

@@ -1,11 +1,11 @@
 import React from 'react'
 import { Skeleton } from '../../components/ui/skeleton';
 import Course from './Course';
-import { useGetPublishedCourseQuery } from '@/features/api/courseApi';
+import { useGetAllCoursesQuery, useGetPublishedCourseQuery } from '@/features/api/courseApi';
 function Courses() {
 
   // const isLoading = false;
-  const courses = [1,2,3,4,4,5,];
+  // const courses = [1,2,3,4,4,5,];
   const {data , isLoading , isSuccess , error ,isError} = useGetPublishedCourseQuery()
   console.log("data = " , data)
 

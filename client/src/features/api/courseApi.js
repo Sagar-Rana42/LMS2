@@ -94,7 +94,7 @@ export const courseApi = createApi({
         }),
         getPublishedCourse:builder.query({
             query:()=>({
-                url:"/isPublish",
+                url:"/",
                 method:"GET",
 
             })

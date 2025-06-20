@@ -48,7 +48,7 @@ duration-500
           {data?.courses?.map((course) => (
             <TableRow key={course?._id}>
               <TableCell className="font-medium">{course?.courseTitle}</TableCell>
-              <TableCell><Badge className='bg-gray-300 rounded text-black duration-700'>{course?.isPublished ? "publish" : "Draft"}</Badge></TableCell>
+              <TableCell><Badge className='bg-gray-300 rounded text-black duration-700'>{course?.isPublished ? "publish" : "not publish"}</Badge></TableCell>
               {/* <TableCell>{course?.paymentMethod}</TableCell> */}
               <TableCell className="text-right">
                 {course?.coursePrice || "NA"}

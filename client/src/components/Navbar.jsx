@@ -94,7 +94,7 @@ const Navbar = () => {
                 {user?.role === "instructor" && (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem> <Link to='/dashboard'>Dashboard</Link></DropdownMenuItem>
+                    <DropdownMenuItem> <Link to='/admin/dashboard'>Dashboard</Link></DropdownMenuItem>
                   </>
                 )}
               </DropdownMenuContent>
@@ -154,12 +154,14 @@ const Navbar = () => {
               {user?.role === "instructor" && (
                 <SheetFooter className="mt-4">
                   <SheetClose asChild>
+                    <Link to={'/admin/dashboard'}>
                     <Button
                       type="submit"
                       className="bg-green-400 rounded text-black hover:bg-green-700 hover:text-gray-700 duration-300"
                     >
                       Dashboard
                     </Button>
+                    </Link>
                   </SheetClose>
                 </SheetFooter>
               )}

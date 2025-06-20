@@ -40,9 +40,8 @@ export const createCourse = async(req,res)=>{
     }
 }
 
-export const getAllCourses = async(req,res)=>{
+export const getAllCourses = async(_,res)=>{
     try {
-        const adminId = req?.id;
         // console.log("id = ",adminId)
         const courses = await Course.find({})
 

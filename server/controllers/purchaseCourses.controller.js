@@ -225,6 +225,18 @@ export const getSingleIsPurchasedCourse = async(req,res)=>{
         // console.log("incoming call for details ")
         const {courseId} = req.params
         const userId = req.id;
+
+        /*
+        if(!userId){
+            const courseDetail = await Course.findById(courseId);
+            return res
+            .status(200)
+            .json({
+                courseDetail,
+                detail:"course details"
+            })
+        }
+        */
         // console.group("course id = ", courseId)
 
         // const course = await Course.findById(courseId)
@@ -252,6 +264,8 @@ export const getSingleIsPurchasedCourse = async(req,res)=>{
         // make sure course is purchased 
         const purchased = await CoursePurchase.findOne({userId , courseId})
         // console.log("purchased = ", purchased );
+
+        
 
         return res
         .status(200)

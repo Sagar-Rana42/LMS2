@@ -19,7 +19,8 @@ import EditLecture from "./pages/teacherDashboard/lecture/EditLecture";
 import CourseDetails from "./pages/studentDashboard/CourseDetails";
 import CourseProgress from "./pages/studentDashboard/CourseProgress";
 // import HeroSection from "./pages/ACCComponent/heroSection/HeroSection.jsx";
-
+import {AuthenticatedUser, IsLogin ,IsAdmin } from "./components/ProctedRoute"
+import PurchaseCourseProtectedRoute from "./components/PurchaseProtectedRoute";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -31,30 +32,33 @@ const appRouter = createBrowserRouter([
       },
       {
         path:"login",
-        element:<Login/>
+        element:<AuthenticatedUser><Login/></AuthenticatedUser>  
       },
       {
         path:"my-learning",
-        element:<MyLearning/>
+        element: <IsLogin> <MyLearning/></IsLogin>
       },
       {
         path:"profile",
-        element:<Profile/>
+        element: <IsLogin> <Profile/></IsLogin>
       },
       {
         path:"course-details/:courseId",
-        element:<CourseDetails/>
+        element: <IsLogin> <CourseDetails/> </IsLogin>
       },
       {
         path:"course-progress/:courseId",
-        element:<CourseProgress/>
+        element:<PurchaseCourseProtectedRoute>
+
+          <IsLogin> <CourseProgress/></IsLogin>
+         </PurchaseCourseProtectedRoute>
       },
 
 
       // admin route start here 
       {
         path:"admin",
-        element:<Sidebar/>,
+        element: <IsAdmin><Sidebar/></IsAdmin> ,
         children:[
           {
             path:"dashboard",

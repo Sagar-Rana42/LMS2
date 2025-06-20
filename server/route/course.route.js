@@ -28,7 +28,7 @@ router.route("/get-course/:courseId/lecture/:lectureId").post(isAuthenticated,ed
 router.route("/lecture/:lectureId").delete(isAuthenticated,removeLecture)
 router.route("/lecture/:lectureId").get(isAuthenticated,getLectureById)
 router.route("/course/:courseId").patch(isAuthenticated,publish)
-router.route("/isPublish").get(isAuthenticated,getPublishedCourse)
+router.route("/").get(getPublishedCourse)
 
 
 
