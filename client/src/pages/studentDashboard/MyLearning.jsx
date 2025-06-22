@@ -12,9 +12,10 @@ function MyLearning() {
 
   return ( 
     
-    
-      <div className="w-full   text-2xl  ">
-        <div className="mt-24  relatve max-w-4xl  mx-auto my-10 px-4 md:px-0  ">
+    // <div className="flex flex-col justify-center items-center text-center px-4">
+
+      <div className="w-full h-[70vh] sm:h-[80vh] lg:h-[90vh] text-2xl  ">
+        <div className="  relatve max-w-4xl  mx-auto my-10 px-4 md:px-0  ">
           <h1 className="font-semibold text-3xl">MY LEARNING</h1>
           <div className="my-5">
             {isLoading ? (

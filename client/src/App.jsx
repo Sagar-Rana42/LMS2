@@ -3,7 +3,7 @@ import "./App.css";
 import { Button } from "./components/ui/button";
 import Login from "./pages/login";
 import Navbar from "./components/Navbar";
-import HeroSection from "./pages/ACCComponent/heroSection/HeroSection.jsx";
+import HeroSection from "./pages/home/HeroSection.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import Home from "./pages/home/Home";
@@ -18,9 +18,11 @@ import CreateLecture from "./pages/teacherDashboard/lecture/CreateLecture";
 import EditLecture from "./pages/teacherDashboard/lecture/EditLecture";
 import CourseDetails from "./pages/studentDashboard/CourseDetails";
 import CourseProgress from "./pages/studentDashboard/CourseProgress";
+import NotFound from "./components/NotFound";
 // import HeroSection from "./pages/ACCComponent/heroSection/HeroSection.jsx";
 import {AuthenticatedUser, IsLogin ,IsAdmin } from "./components/ProctedRoute"
 import PurchaseCourseProtectedRoute from "./components/PurchaseProtectedRoute";
+import Courses from "./pages/studentDashboard/Courses";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +32,11 @@ const appRouter = createBrowserRouter([
         path: "/",
         element: <Home/>
       },
+      {
+        path:"courses",
+        element:<Courses/>
+      },
+    
       {
         path:"login",
         element:<AuthenticatedUser><Login/></AuthenticatedUser>  
@@ -52,6 +59,10 @@ const appRouter = createBrowserRouter([
 
           <IsLogin> <CourseProgress/></IsLogin>
          </PurchaseCourseProtectedRoute>
+      },
+      {
+        path:"*",
+        element:<NotFound/>
       },
 
 
@@ -87,6 +98,9 @@ const appRouter = createBrowserRouter([
         ]
       }
     ],
+
+    
+      
   },
 ]);
 

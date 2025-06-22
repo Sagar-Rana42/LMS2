@@ -4,7 +4,7 @@ import { deletePhotoFromCloudinary , deleteVideoFromClouinary, uploadMedia} from
 
 export const createCourse = async(req,res)=>{
     try {
-        console.log("incoming request for create course ")
+        // console.log("incoming request for create course ")
         
         const {courseTitle ,category } = req.body;
         if([courseTitle,category].some((field) => typeof field !== 'string' || field.trim() === "")){

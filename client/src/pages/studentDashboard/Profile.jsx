@@ -28,7 +28,7 @@ function Profile() {
   const [photoUrl, setPhotoUrl] = useState("");
 
   const { data: userData, isLoading ,refetch } = useUserProfileQuery();
-  console.log("data = - ", userData)
+  // console.log("data = - ", userData)
 
   const [
     updateUserProfile,
@@ -80,7 +80,7 @@ function Profile() {
  
   
   return (
-    <div className="my-24 max-w-4xl mx-auto px-4">
+    <div className="my-10 max-w-4xl mx-auto px-4">
       <h1 className="font-bold text-2xl text-left max-sm:text-center">
         Profile
       </h1>

@@ -2,8 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* ... */
 
- body{
-    @apply bg-black text-white
-} 
+/* body {
+  background-image: radial-gradient(at 30% 20%, #1e293b 0%, #000 100%);
+  color: white;
+} */
+
+/* body {
+  @apply text-white;
+  background: radial-gradient(circle at top center, #1a1a1a, #0b0b0b, #000);
+} */
+/* body {
+  @apply text-white;
+  background: linear-gradient(to bottom right, #0f172a, #0a0a0a, #000000);
+} */
+
+body {
+   overflow-x: hidden;
+  @apply text-white;
+  background: linear-gradient(to bottom right, #0f172a, #0a0a0a, #000000);
+}
+
+
+

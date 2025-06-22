@@ -21,7 +21,7 @@ function CreateCourse() {
   const [category , setCategory] = useState();
 
   const [CreateCourse , {data,isLoading, isSuccess, error,isError}] = useCreateCourseMutation();
-  console.log("error = " ,error?.data)
+  // console.log("error = " ,error?.data)
   
   const navigate = useNavigate()
  

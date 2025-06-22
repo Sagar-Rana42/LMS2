@@ -1,22 +1,21 @@
 import React from 'react'
-import HeroSection from '../ACCComponent/heroSection/HeroSection'
+import HeroSection from './HeroSection'
 import Courses from '../studentDashboard/Courses'
 import WhyChooseMe from './WhyChooseMe'
-import Instructor from './Instructor'
+import InstructorPage from './Instructor'
 
 function Home() {
   return (
     <div>
-        <HeroSection/>
-        <Courses/>
-        <WhyChooseMe/>
-        <Instructor/>
-        {/* <HeroSection/>
-        <HeroSection/>
-        <HeroSection/>
-        <HeroSection/> */}
-        
-    </div>
+      <HeroSection />
+      <div className="border-b border-gray-700 my-16 w-11/12 mx-auto"></div>
+      <Courses />
+      <div className="border-b border-gray-700 my-16 w-11/12 mx-auto"></div>
+      <WhyChooseMe />
+      <div className="border-b border-gray-700 my-16 w-11/12 mx-auto"></div>
+      <InstructorPage />
+   </div>
+
   )
 }
 

@@ -13,14 +13,14 @@ function CourseProgress() {
   const { data, isLoading, isError, error, isSuccess, refetch } =
     useGetCourseProgressQuery(courseId);
 
-  console.log("lectures = ", lectures);
+  // console.log("lectures = ", lectures);
   useEffect(() => {
     if (isSuccess) {
       setLectures(data?.lectures);
     }
   }, [courseId]);
   const isComleted = true;
-  console.log("progress lecture = ", data);
+  // console.log("progress lecture = ", data);
 
   const playLecture = (index) => {
     setCurrent(index);
@@ -32,10 +32,10 @@ function CourseProgress() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 mt-20">
+    <div className="max-w-7xl mx-auto p-4 ">
       <div className="flex justify-between mb-4 ">
         <h1 className="text-2xl  font-bold"> {data?.courseTitle}</h1>
-        <Button>Completed</Button>
+        
       </div>
       <div className="flex flex-col md:flex-row gap-6 ">
         {/* video section  */}
@@ -67,27 +67,19 @@ function CourseProgress() {
                 className="mb-3 hover:cursor-pointer transition transform"
               >
                 <CardContent
-                  className="flex items-center justify-between p-4 "
-                  onClick={() => playLecture(index)} // Moved here
+                  className="flex items-center justify-between p-4"
+                  onClick={() => playLecture(index)}
                 >
                   <div className="flex items-center">
-                    {isComleted ? (
-                      <CheckCircle size={20} className="text-green-500 mr-2" />
-                    ) : (
-                      <CirclePlay className="text-gray-500 mr-2" />
-                    )}
+                    <CirclePlay className="text-gray-400 mr-2" />{" "}
+                    {/* neutral icon */}
                     <div>
                       <CardTitle className="text-lg font-medium">
-                        {lecture?.lectureTitle || "lecture title"}
+                        {lecture?.lectureTitle || "Lecture Title"}
                       </CardTitle>
                     </div>
                   </div>
-                  <Badge
-                    variant="outline"
-                    className="rounded bg-green-100 text-green-600"
-                  >
-                    Completed
-                  </Badge>
+                  {/* Removed Badge */}
                 </CardContent>
               </Card>
             ))}

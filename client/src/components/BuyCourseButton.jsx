@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 const BuyCourseButton = ({ courseId }) => {
 
   const navigateTo = useNavigate();
-  const [purchaseCourse, { data, isLoading, isSuccess, error,isError }] = usePurchaseCourseMutation();
-  console.log("data =" , data)
+  const [purchaseCourse, { data, isLoading, isSuccess, error,isError  }] = usePurchaseCourseMutation();
+  // console.log("data =" , data)
 
   const purchaseCourseHandler = async () => {
     try {
@@ -21,6 +21,7 @@ const BuyCourseButton = ({ courseId }) => {
 
   useEffect(()=>{
     if(isSuccess){
+      
       // course purchasse ho chuka hai 
       toast.success(data?.msg || "course buy successfully")
       navigateTo(`/course-progress/${courseId}`)

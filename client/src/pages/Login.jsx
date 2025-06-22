@@ -16,13 +16,12 @@ import {
 } from "@/features/api/authApi";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Toaster } from "@/components/ui/sonner"
-import { toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [loginInput, setLoginInput] = useState({
     email: "",
@@ -68,11 +67,11 @@ export default function Login() {
       isError: registerIsError,
       isLoading: registerIsLoading,
       isSuccess: registerIsSuccess,
-      error:registerErrorData,
+      error: registerErrorData,
     },
   ] = useRegisterUserMutation();
   //  console.log("register user from login page , after calling reguster user , " ,registerData)
-  
+
   const [
     loginUser,
     {
@@ -80,7 +79,7 @@ export default function Login() {
       isError: loginIsError,
       isLoading: loginIsLoading,
       isSuccess: loginIsSuccess,
-      error : loginErrorData,
+      error: loginErrorData,
     },
   ] = useLoginUserMutation();
   // console.log("login data " ,loginData)
@@ -93,7 +92,6 @@ export default function Login() {
     await action(inputdata);
   };
 
-  
   useEffect(() => {
     if (registerIsSuccess && registerData) {
       toast.success(registerData?.msg || "User registered successfully");
@@ -113,26 +111,39 @@ export default function Login() {
 
   useEffect(() => {
     if (loginIsError) {
-        console.log("Login error: ", loginErrorData);
-        toast.error(loginErrorData?.data?.msg || "Login failed");
-      }
+      console.log("Login error: ", loginErrorData);
+      toast.error(loginErrorData?.data?.msg || "Login failed");
+    }
   }, [loginIsError, loginErrorData]);
 
-
-
   return (
-    <div className=" w-full flex  justify-center mt-40">
+    <div className="w-full flex justify-center mt-28 px-4">
       <Tabs defaultValue="Login" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="Login">Login</TabsTrigger>
-          <TabsTrigger value="Signup">SignUp</TabsTrigger>
+          <TabsTrigger
+             className=" data-[state=active]:bg-gray-800 data-[state=active]:font-semibold text-white rounded px-4 py-2 transition"
+            value="Signup"
+          >
+            Signup
+          </TabsTrigger>
+
+          <TabsTrigger
+           className=' className="hover:text-lg data-[state=active]:bg-gray-800 data-[state=active]:font-semibold text-white rounded px-4 py-2 transition"'
+            value="Login"
+          >
+            Login
+          </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="Login">
-          <Card>
+          <Card className="bg-gray-900 border border-gray-800 shadow-lg text-white rounded-xl">
             <CardHeader>
-              <CardTitle>Login</CardTitle>
-              <CardDescription>Login your account here</CardDescription>
+              <CardTitle className="text-3xl font-extrabold bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 text-transparent bg-clip-text tracking-wide mb-1">
+                Login
+              </CardTitle>
+              <CardDescription className="text-gray-400">
+                Login your account here
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="space-y-1">
@@ -153,7 +164,7 @@ export default function Login() {
                 <Input
                   id="password"
                   placeholder="Enter password"
-                  className="rounded"
+                  className="rounded bg-gray-800 border border-gray-700 text-white placeholder-gray-400"
                   name="password"
                   // onChange={(e) => changeInput(e, "login")}
                   onChange={handleInputLogin}
@@ -164,6 +175,7 @@ export default function Login() {
             </CardContent>
             <CardFooter>
               <Button
+                className="w-full bg-green-600 hover:bg-green-500 text-white font-bold rounded"
                 disabled={loginIsLoading}
                 onClick={() => handleRegistration("login")}
               >
@@ -180,10 +192,14 @@ export default function Login() {
         </TabsContent>
 
         <TabsContent value="Signup">
-          <Card>
+          <Card className="bg-gray-900 border border-gray-800 shadow-lg text-white rounded-xl">
             <CardHeader>
-              <CardTitle>SignUp</CardTitle>
-              <CardDescription>Create account here</CardDescription>
+              <CardTitle className="text-3xl font-extrabold bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 text-transparent bg-clip-text tracking-wide mb-1">
+                signup
+              </CardTitle>
+              <CardDescription className="text-gray-400">
+                Login your account here
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="space-y-1">
@@ -193,7 +209,7 @@ export default function Login() {
                   type="text"
                   placeholder="Your username"
                   required={true}
-                  className="rounded"
+                  className="rounded bg-gray-800 border border-gray-700 text-white placeholder-gray-400"
                   name="username"
                   onChange={handleInputSignup}
                   value={signupInput.username}
@@ -207,7 +223,7 @@ export default function Login() {
                   type="email"
                   placeholder="Your email"
                   required={true}
-                  className="rounded"
+                  className="rounded bg-gray-800 border border-gray-700 text-white placeholder-gray-400"
                   name="email"
                   onChange={handleInputSignup}
                   value={signupInput.email}
@@ -221,7 +237,7 @@ export default function Login() {
                   type="password"
                   placeholder="password"
                   required={true}
-                  className="rounded"
+                  className="rounded bg-gray-800 border border-gray-700 text-white placeholder-gray-400"
                   name="password"
                   onChange={handleInputSignup}
                   value={signupInput.password}
@@ -234,7 +250,7 @@ export default function Login() {
                   type="number"
                   placeholder="phone number"
                   required={true}
-                  className="rounded"
+                  className="rounded bg-gray-800 border border-gray-700 text-white placeholder-gray-400"
                   name="phone"
                   onChange={handleInputSignup}
                   value={signupInput.phone}
@@ -243,6 +259,7 @@ export default function Login() {
             </CardContent>
             <CardFooter>
               <Button
+                className="w-full bg-green-600 hover:bg-green-500 text-white font-bold rounded"
                 disabled={registerIsLoading}
                 onClick={() => handleRegistration("signup")}
               >

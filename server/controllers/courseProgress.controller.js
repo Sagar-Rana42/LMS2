@@ -1,4 +1,3 @@
-import { CourseProgress } from "../models/courseProgress.model.js";
 import Course from "../models/course.model.js"
 import CoursePurchase from "../models/coursePurchase.model.js";
 
@@ -83,7 +82,7 @@ export const lectureProgress = async(req,res)=>{
     }
 }
 
-// controllers/course.controller.js
+
 
 
 export const getCourseLecturesForProgress = async (req, res) => {

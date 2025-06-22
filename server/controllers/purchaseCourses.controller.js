@@ -141,7 +141,7 @@ export const webhook = async(req,res)=>{
 
 export const coursePurchase  = async (req,res)=>{
     try {
-        console.log("incoming request for purchase course")
+        // console.log("incoming request for purchase course")
         const userId = req.id;
         const {courseId} = req.body;
         const course = await Course.findById(courseId);

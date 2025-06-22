@@ -1,58 +1,50 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import React from "react";
 
-import { Badge } from "@/components/ui/badge"
-import { Link } from "react-router";
- 
-
-function Course({course}) {
-  const user = true;
+function Course({ course }) {
   return (
-    
     <Link to={`/course-details/${course?._id}`}>
-      <Card className="  overflow-hidden bg-slate-300 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500">
+      <Card className="bg-[#111111] border border-[#222] rounded-xl shadow-md hover:shadow-xl hover:border-blue-500 transition-all duration-300 overflow-hidden">
         <div className="relative">
           <img
             src={course?.courseThumbnail}
-            alt="Next.js"
-            className="w-full h-46 object-cover rounded-t-lg"
+            alt={course?.courseTitle}
+            className="w-full h-48 object-cover"
           />
         </div>
-        <CardContent className='px-5 py-5 '>
 
-          <p className="hover:underline duration-300 font-bold truncate text-black">
+        <CardContent className="px-5 py-4 text-white">
+          <h3 className="text-xl font-semibold truncate mb-2 hover:text-blue-400 transition-colors duration-300">
             {course?.courseTitle}
-          </p>
+          </h3>
 
-          <div className="flex items-center  ">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <Avatar>
-                <AvatarImage 
-                className="h-10 w-10 rounded-full m-2"
-                  src={course?.creator && course?.creator?.photoUrl || "https://github.com/shadcn.png"}
-                  alt="@shadcn"
+                <AvatarImage
+                  src={course?.creator?.photoUrl || "User"}
+                  alt={course?.creator?.username}
+                  className="w-9 h-9 rounded-full"
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              
-              <p className="font-medium ml-6 text-black">{course?.creator && course?.creator?.username}</p>
-            
+              <span className="ml-3 text-sm text-gray-300">{course?.creator?.username}</span>
             </div>
-            <Badge className={'bg-blue-600 rounded-full  max-md:ml-4 '}>{course?.courseLevel}</Badge>
-            
+
+            <Badge className="bg-blue-600 text-white text-xs rounded-full px-3 py-1">
+              {course?.courseLevel}
+            </Badge>
           </div>
 
-          <div className="font-semibold">
-            <span  className="text-black" >
-              &#8377; {course?.coursePrice}
-            </span>
+          <div className="text-right text-green-400 font-bold text-lg">
+            ₹ {course?.coursePrice}
           </div>
         </CardContent>
       </Card>
-
     </Link>
-
   );
 }
 

@@ -101,7 +101,7 @@ export const loginUser = async (req, res) => {
 
 export const logOut = async(_,res)=>{
     try {
-        console.log("coming req for logut")
+        // console.log("coming req for logut")
         return res.status(200).cookie("token","" , {maxAge:0}).json({
             success:true,
             msg:"logout successfully"
@@ -144,7 +144,7 @@ export const profile= async(req,res)=>{
 
 export const updateProfile = async(req,res)=>{
     try {
-        console.log("Request is coming");
+        // console.log("Request is coming");
         // console.log(req.body)
 
         const { username } = req.body;
