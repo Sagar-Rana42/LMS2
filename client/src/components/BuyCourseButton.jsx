@@ -16,7 +16,7 @@ const BuyCourseButton = ({ courseId }) => {
       console.log("buy course called ");
       const {data  } = await purchaseCourse({courseId}); // Assuming API expects object
       console.log("buy course called after response = ", data);
-      // console.log("buy course called after razorpay = = ", data.razorpayKey);
+      // console.log("buy course called after razorpay = = ", data.razorpayKey)
 
       if(!data){
         toast.error("response not getting of prrchase course")

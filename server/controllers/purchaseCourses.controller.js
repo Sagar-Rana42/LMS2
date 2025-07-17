@@ -6,144 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { razorpayInstance } from "../utils/razorpayInstance.js";
 import crypto from "crypto";
 
-
-// Import Stripe SDK and initialize it
-// import Stripe from "stripe";
-// const stripe = new Stripe(process.env.STRIPE_API_KEY);
-
-// Controller function to create a Stripe Checkout session
-/*
-export const createCheckoutSession = async (req, res) => {
-  try {
-        // Get userId from the authenticated request (usually set by middleware)
-        const userId = req.id;
-
-        // Destructure courseId from request body
-        const { courseId } = req.body;
-
-        // Fetch the course details from the database
-        const course = await Course.findById(courseId);
-        if (!course) {
-        return res.status(400).json({
-            msg: "Course not found",
-        });
-        }
-
-        // Step 1: Create a new purchase record with 'pending' status
-        const newPurchase = new CoursePurchase({
-            courseId,
-            userId,
-            amount: course?.coursePrice,
-            status: "pending",
-        });
-
-        // Step 2: Create a Stripe Checkout session
-        const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"], // Accept only card payments
-        line_items: [
-            {
-            price_data: {
-                currency: "inr",
-                product_data: {
-                name: course?.courseTitle,
-                images: [course.courseThumbnail], // Course thumbnail (visible on Stripe checkout page)
-                },
-                unit_amount: course.coursePrice * 100, // Stripe expects amount in smallest unit (paise)
-            },
-            quantity: 1,
-            },
-        ],
-        mode: "payment", // One-time payment
-        success_url: `${process.env.FRONTEND_URL}/course-progress/${courseId}`, // Redirect after success
-        cancel_url: `${process.env.FRONTEND_URL}/course-details/${courseId}`,   // Redirect after cancel
-        metadata: {
-            courseId: courseId,
-            userId: userId, // Correct usage of user ID
-        },
-        shipping_address_collection: {
-            allowed_countries: ["IN"], // Only allow shipping addresses from India (optional)
-        },
-        });
-
-        // If Stripe fails to create a session
-        if (!session.url) {
-            return res.status(400).json({
-                success: false,
-                msg: "Failed to initiate course purchase",
-            });
-        }
-
-        // Step 3: Update the purchase record with the payment session ID and save to DB
-        newPurchase.paymentId = session.id;
-        await newPurchase.save();
-
-        // Step 4: Return the session URL to frontend for redirection
-        return res.status(200).json({
-            success: true,
-            url: session.url,
-        });
-
-    } catch (error) {
-        console.error("Error from Stripe session:", error?.message);
-        return res.status(500).json({
-        success: false,
-        message: "Internal server error during payment session creation",
-        });
-    }
-};
-
-
-export const webhook = async(req,res)=>{
-    let event;
-    try {
-        const payloadString = JSON.stringify(req.body , null, 2)
-        const secret  = process.env.WEBHOOK_ENDPOINT_SECRET;
-
-        const header  = stripe.webhooks.generateTestHeaderString({
-            payload:payloadString,
-            secret,
-        })
-        event.stripe.webhooks.constructEvent(payloadString,header,secret);
-
-        // handle the checkout session completed event 
-        if(event.type === "checkout.session.completed"){
-            try {
-                const session = event.data.object;
-                const purchase = await CoursePurchase.findOne({
-                    paymentId:session.id,
-                }).populate({path:"courseId"});
-                if(!purchase){
-                    return res.status(404).json({msg:"purchase not found"})
-                }
-                if(session.amount_total){
-                    purchase.amount = session.amount_total/100;
-                }
-                purchase.status = "completed";
-
-                // make all lectures visible by setting  ' isPreviewfeee'
-                if(purchase.courseId && purchase.courseId.lectures.length > 0){
-                    await Lecture.updateMany(
-                       {_id: {$in:purchase.courseId.lectures}},
-                       {$set:{isPreviewFree : true}}
-                    )
-                }
-                await purchase.save();
-                // update user's enrolledcourse
-                await Course.findByIdAndUpdate
-            } catch (error) {
-                
-            }
-        }
-
-    } catch (error) {
-        console.log("Webhook error:" , error.message)
-        return res
-        .status(400)
-        .send(`Webhook error: ${error.message}`)
-    }
-}
-*/
-
 export const coursePurchase  = async (req,res)=>{
 
     try {
@@ -186,8 +48,7 @@ export const coursePurchase  = async (req,res)=>{
 
 export const verifypayment = async (req, res) => {
   try {
-        // console.log("body = ", req.body); //  Add this log
-        // console.log("incomming call for verify ");
+       
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
         if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -203,10 +64,12 @@ export const verifypayment = async (req, res) => {
 
         const isValid = expectedSignature === razorpay_signature;
         // console.log("valid = " , isValid);
-        if(isValid){
-            // console.log("process under valid ");
+        if(isValid ){
+            console.log("process under valid ");
             const userId = req.id;
             const {courseId} = req.body;
+
+            
             // console.log("courseId = " ,  courseId)
             const course = await Course.findById(courseId);
             // console.log("course = " , course)
