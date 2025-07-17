@@ -32,7 +32,7 @@ const Footer = () => {
           <ul className="space-y-2 text-gray-300 text-sm">
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/signup">Signup</Link></li>
-            <li><Link to="/admin/dashboard">Instructor Dashboard</Link></li>
+            <li onClick={()=>window.location.reload()}><Link to="/admin/dashboard">Instructor Dashboard</Link></li>
             <li><Link to="#">Privacy Policy</Link></li>
           </ul>
         </div>

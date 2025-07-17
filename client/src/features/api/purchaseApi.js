@@ -11,13 +11,13 @@ export const purchaseApi = createApi({
   tagTypes: ["CourseStatus"], //  define tag type
   endpoints: (builder) => ({
     purchaseCourse: builder.mutation({
-      query: (courseId) => ({
-        url: "/purchase-course",
+      query: ({ courseId }) => ({
+        url: "/create-course",
         method: "POST",
-        body: courseId,
+        body: { courseId },
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: "CourseStatus", id: arg.courseId }, // invalidate the matching tag
+        { type: "CourseStatus", id: arg.courseId },
       ],
     }),
 
@@ -42,10 +42,7 @@ export const purchaseApi = createApi({
 });
 
 export const {
-    
-    usePurchaseCourseMutation,
-    useGetCourseDetailWithStatusQuery,
-    useGetAllPurchasedCourseQuery,
-    
-
-} = purchaseApi
+  usePurchaseCourseMutation,
+  useGetCourseDetailWithStatusQuery,
+  useGetAllPurchasedCourseQuery,
+} = purchaseApi;

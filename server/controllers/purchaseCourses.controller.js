@@ -3,12 +3,16 @@ import CoursePurchase from "../models/coursePurchase.model.js";
 import Lecture from "../models/lecture.model.js";
 import User from "../models/user.model.js"
 import { v4 as uuidv4 } from 'uuid';
+import { razorpayInstance } from "../utils/razorpayInstance.js";
+import crypto from "crypto";
+
 
 // Import Stripe SDK and initialize it
 // import Stripe from "stripe";
 // const stripe = new Stripe(process.env.STRIPE_API_KEY);
 
 // Controller function to create a Stripe Checkout session
+/*
 export const createCheckoutSession = async (req, res) => {
   try {
         // Get userId from the authenticated request (usually set by middleware)
@@ -138,11 +142,14 @@ export const webhook = async(req,res)=>{
         .send(`Webhook error: ${error.message}`)
     }
 }
+*/
 
 export const coursePurchase  = async (req,res)=>{
+
     try {
-        // console.log("incoming request for purchase course")
-        const userId = req.id;
+        // console.log("incomming request for create ");
+        // console.log("body = ", req.body);
+
         const {courseId} = req.body;
         const course = await Course.findById(courseId);
 
@@ -153,61 +160,121 @@ export const coursePurchase  = async (req,res)=>{
                 msg:"Failed to buy course "
             })
         }
+        // console.log("course = ", course)
 
-       // Step 1: Create a new purchase record with 'pending' status
-        const newPurchase = new CoursePurchase({
-            courseId,
-            userId,
-            amount: course?.coursePrice,
-            status: "completed",
-
-        });
-
-        // Step 2: Update the purchase record with the payment session ID and save to DB
-        // abhi jo purchase hua hai course uska record do 
-        const sessionId = uuidv4();
-        newPurchase.paymentId = sessionId;
-        await newPurchase.save();
-
-        const purchase = await CoursePurchase.findOne({paymentId:sessionId}).populate({path:"courseId"})
-        // us courseId ka pura data chipkado do refernce me 
-        // console.log("purchase = " , purchase)
-        if(!purchase){
-            return res.status(404).json({msg:"purchase course not found"})
+        const {coursePrice} = course;
+        // console.log("coursePrice = ", coursePrice);
+    
+        const options = {
+            amount:coursePrice*100, // coursePrice in paise 
+            currency:"INR",
+            receipt:`order_rectid_${Date.now()}`,
         }
-        if(purchase?.courseId && purchase?.courseId?.lectures.length > 0){
-            await Lecture.updateMany(
-                {_id: {$in:purchase.courseId.lectures}  },
-                {$set: {isPreviewFree:true}}
-            )
-        }
-        await purchase.save();
 
-        // now course add in user enrollement section 
-       const updatedUser =  await User.findByIdAndUpdate(
-            purchase?.userId, 
-            {$addToSet : {enrolledCourses:purchase.courseId._id}},
-            {new:true}
-        )
-        // now update course , ab course ke ander enroll student ko add karo
-       const updatedCourse =  await Course.findByIdAndUpdate(
-            purchase?.courseId?._id,
-            {$addToSet:{enrolledStudents:purchase?.userId}}  ,
-            {new  :true}
-        )
-        
-       
-        // const course2 = await Course.findById(purchase?.courseId?._id)
-        // const user2 = await User.findById(userId)
-        // console.log("useer2 = ", user2)
-
-        return res
-        .status(200)
-        .json({
-           msg:"course buy successfully",
-            success:true,
-
+        const order = await razorpayInstance.orders.create(options);
+        console.log("order create for course ", order)
+    
+        res.json({success:true ,razorpayKey: process.env.RAZORPAY_KEY_ID, order});
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success:false,
+            msg:"Order creation failed  "
         })
+    }
+}
+
+export const verifypayment = async (req, res) => {
+  try {
+        // console.log("body = ", req.body); //  Add this log
+        // console.log("incomming call for verify ");
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+        return res.status(400).json({ msg: "all fields are important" });
+        }
+
+        const body = razorpay_order_id + "|" + razorpay_payment_id;
+        // console.log("body = " , body)
+        const expectedSignature = crypto
+        .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+        .update(body)
+       .digest("hex");
+
+        const isValid = expectedSignature === razorpay_signature;
+        // console.log("valid = " , isValid);
+        if(isValid){
+            // console.log("process under valid ");
+            const userId = req.id;
+            const {courseId} = req.body;
+            // console.log("courseId = " ,  courseId)
+            const course = await Course.findById(courseId);
+            // console.log("course = " , course)
+            if(!course){
+                return res
+                .status(400)
+                .json({
+                    msg:"Failed to buy course,  courseId not found"
+                })
+            }
+
+            // Step 1: Create a new purchase record with 'pending' status
+            const newPurchase = new CoursePurchase({
+                courseId,
+                userId,
+                amount: course?.coursePrice,
+                status: "completed",
+
+            });
+            const sessionId = uuidv4();
+            newPurchase.paymentId = sessionId;
+            await newPurchase.save();
+            console.log("course purchase schema")
+            
+            // Step 2: Update the purchase record with the payment session ID and save to DB
+            // abhi jo purchase hua hai course uska record do 
+       
+
+            const purchase = await CoursePurchase.findOne({paymentId:sessionId}).populate({path:"courseId"})
+            // us courseId ka pura data chipkado do refernce me 
+            // console.log("purchase = " , purchase)
+            if(!purchase){
+                return res.status(404).json({msg:"purchase course not found"})
+            }
+            if(purchase?.courseId && purchase?.courseId?.lectures.length > 0){
+                await Lecture.updateMany(
+                    {_id: {$in:purchase.courseId.lectures}  },
+                    {$set: {isPreviewFree:true}}
+                )
+            }
+            await purchase.save();
+
+            // now course add in user enrollement section 
+            const updatedUser =  await User.findByIdAndUpdate(
+                purchase?.userId, 
+                {$addToSet : {enrolledCourses:purchase.courseId._id}},
+                {new:true}
+            )
+
+            // now update course , ab course ke ander enroll student ko add karo
+            const updatedCourse =  await Course.findByIdAndUpdate(
+                purchase?.courseId?._id,
+                {$addToSet:{enrolledStudents:purchase?.userId}}  ,
+                {new  :true}
+            )
+
+            return res
+            .status(200)
+            .json({
+            msg:"course buy successfully",
+                success:true,
+
+            })
+        }
+        else{
+            return res.status(400).json({msg:"not valid "})
+        }
+
 
     } catch (error) {
         console.log("error in course purchase ", error);
@@ -217,7 +284,9 @@ export const coursePurchase  = async (req,res)=>{
             msg:"Failed to but course due to internal server problem "
         })
     }
-}
+   
+
+};
 
 // this controller is used to show course purchased , status
 export const getSingleIsPurchasedCourse = async(req,res)=>{

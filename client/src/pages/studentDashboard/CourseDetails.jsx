@@ -109,7 +109,7 @@ function CourseDetails() {
 
               <Separator className="my-2" />
               <h3 className="text-lg font-semibold mb-2">
-                ₹{course?.price || 499}
+                ₹{course?.coursePrice || 499}
               </h3>
             </CardContent>
 

@@ -2,7 +2,8 @@ import React from "react";
 
 function WhyChooseMe() {
   return (
-    <div className="h-[70vh] sm:h-[80vh] lg:h-[90vh]  bg-black text-white py-12 px-4 sm:px-6 lg:px-20">
+    // h-[70vh] sm:h-[80vh] lg:h-[90vh]  
+    <div className="bg-black h-fit text-white py-12 px-4 sm:px-6 lg:px-20">
       <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-12">
         Why Choose <span className="text-green-400">CodeSphere</span>
       </h2>

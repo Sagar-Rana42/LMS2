@@ -5,7 +5,7 @@ import { useGetPublishedCourseQuery } from '@/features/api/courseApi';
 
 function Courses() {
   const { data, isLoading, isSuccess, error, isError } = useGetPublishedCourseQuery();
-  console.log("data = ", data);
+  // console.log("data = ", data);
 
   if (isError) {
     return (
@@ -16,7 +16,8 @@ function Courses() {
   }
 
   return (
-    <div className="h-[70vh] sm:h-[80vh] lg:h-[90vh]">
+    <div className="">
+      {/* h-[70vh] sm:h-[80vh] lg:h-[90vh] */}
   <div className="max-w-7xl mx-auto px-6  pb-20">
     <h2 className="font-bold text-4xl text-center mb-10 drop-shadow-sm">
       Our Courses
