@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { Button } from "./components/ui/button";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import HeroSection from "./pages/home/HeroSection.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
