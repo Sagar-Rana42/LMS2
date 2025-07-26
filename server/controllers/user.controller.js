@@ -45,7 +45,7 @@ export const registerUser = async ( req, res ) => {
             registerUser
         })
     } catch (error) {
-        console.log("error in register" , error.message);
+        // console.log("error in register" , error.message);
         return res.status(500).json({ success: false, msg: "failed to register" });
     }
 };
@@ -91,7 +91,7 @@ export const loginUser = async (req, res) => {
     
 
   } catch (error) {
-        console.log("error from  login ", error.message )
+        // console.log("error from  login ", error.message )
         return res
         .status(500)
         .json({success:false , msg:"failed to login from server side "})
@@ -107,7 +107,7 @@ export const logOut = async(_,res)=>{
             msg:"logout successfully"
         })
     } catch (error) {
-        console.log(error.message || " error from logout controller" + error)
+        // console.log(error.message || " error from logout controller" + error)
         return res
         .status(500)
         .json({ success:false , msg:"Failed to logout"})
@@ -132,7 +132,7 @@ export const profile= async(req,res)=>{
             user
         })
     } catch (error) {
-        console.log( error.msg || "error from profle controller " + error);
+        // console.log( error.msg || "error from profle controller " + error);
         return res
         .status(500)
         .json({

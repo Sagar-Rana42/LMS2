@@ -26,15 +26,16 @@ function CourseDetails() {
     return (
       <div className="text-center mt-20 text-red-400">
         <p>Failed to load course details. Please try again later.</p>
-        <Button onClick={() => window.location.reload()} className="mt-4">
+        {/* <Button onClick={() => window.location.reload()} className="mt-4">
           Retry
-        </Button>
+        </Button> */}
       </div>
     );
 
   const { course, purchased } = data;
 
   // console.log("data withdetails = ", data);
+  // console.log("data purchased = ", purchased);
 
   function handleContinueCourse() {
     if (purchased) {

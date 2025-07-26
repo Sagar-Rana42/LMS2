@@ -30,7 +30,7 @@ export const createCourse = async(req,res)=>{
 
 
     } catch (error) {
-        console.log("failed to createCourse "+ error.message)
+        // console.log("failed to createCourse "+ error.message)
         return res
         .status(500)
         .json({
@@ -65,7 +65,7 @@ export const getAllCourses = async(_,res)=>{
 
 
     } catch (error) {
-        console.log("error from get all adminn course ", error);
+        // console.log("error from get all adminn course ", error);
         return res
         .status(500)
         .json({
@@ -149,7 +149,7 @@ export const editCourse = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error updating course:", error);
+        // console.error("Error updating course:", error);
         return res.status(500).json({
             success: false,
             msg: `Internal server error while updating course: ${error.message}`,
@@ -229,7 +229,7 @@ export const createLecture = async(req,res)=>{
 
 
     } catch (error) {
-        console.log("error from create course " , + error)
+        // console.log("error from create course " , + error)
         return res
         .status(500)
         .json({
@@ -261,7 +261,7 @@ export const getCourseLecture = async(req,res)=>{
         
 
     } catch (error) {
-        console.log("error from get lecture " , error?.message)
+        // console.log("error from get lecture " , error?.message)
         return res
         .status(500)
         .json({
@@ -317,7 +317,7 @@ export const editLecture = async(req,res)=>{
         })
 
     } catch (error) {
-        console.log("errot from edit course " , error)
+        // console.log("errot from edit course " , error)
         return res
         .status(500)
         .json({
@@ -359,7 +359,7 @@ export const removeLecture = async(req,res)=>{
         })
 
     } catch (error) {
-        console.log("eror = " , error);
+        // console.log("eror = " , error);
         return res
         .status(500)
         .json({
@@ -388,7 +388,7 @@ export const getLectureById = async(req,res)=>{
             lecture
         })
     } catch (error) {
-        console.log("error from get element by id ", error)
+        // console.log("error from get element by id ", error)
         return res
         .status(500)
         .json({
@@ -422,7 +422,7 @@ export const publish = async(req,res)=>{
         })
 
     } catch (error) {
-        console.log("error in publish ",error);
+        // console.log("error in publish ",error);
         return res
         .status(500)
         .json({
@@ -452,7 +452,7 @@ export const getPublishedCourse = async (_,res)=>{
         })
 
     } catch (error) {
-        console.log("error in publish " , error.message)
+        // console.log("error in publish " , error.message)
         return res
         .status(500)
         .json({

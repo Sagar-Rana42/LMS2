@@ -7,7 +7,7 @@ function MyLearning() {
 
   const {data , isLoading , isError , isSuccess , error} = useGetAllPurchasedCourseQuery();
   // const {courseId} = data;
-  console.log("data - " , data)
+  // console.log("data - " , data)
   // const {allPurchasedCourse} = data;
 
   return ( 

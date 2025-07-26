@@ -16,9 +16,7 @@ export const purchaseApi = createApi({
         method: "POST",
         body: { courseId },
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "CourseStatus", id: arg.courseId },
-      ],
+      
     }),
 
     getCourseDetailWithStatus: builder.query({
@@ -26,9 +24,7 @@ export const purchaseApi = createApi({
         url: `/purchased-course/${courseId}`,
         method: "GET",
       }),
-      providesTags: (result, error, arg) => [
-        { type: "CourseStatus", id: arg }, // provides tag with courseId as ID
-      ],
+      
     }),
 
     getAllPurchasedCourse: builder.query({

@@ -5,14 +5,17 @@ import User from "../models/user.model.js"
 import { v4 as uuidv4 } from 'uuid';
 import { razorpayInstance } from "../utils/razorpayInstance.js";
 import crypto from "crypto";
+import mongoose from "mongoose";
 
 export const coursePurchase  = async (req,res)=>{
 
     try {
         // console.log("incomming request for create ");
         // console.log("body = ", req.body);
+        
 
         const {courseId} = req.body;
+        const userId = req.id;
         const course = await Course.findById(courseId);
 
         if(!course){
@@ -22,6 +25,16 @@ export const coursePurchase  = async (req,res)=>{
                 msg:"Failed to buy course "
             })
         }
+        const alreadyPurchased = await CoursePurchase.findOne({
+            userId,
+            courseId,
+            status: "completed"
+        });
+
+        if (alreadyPurchased) {
+            return res.status(400).json({ msg: "Course already purchased" });
+        }
+
         // console.log("course = ", course)
 
         const {coursePrice} = course;
@@ -34,11 +47,11 @@ export const coursePurchase  = async (req,res)=>{
         }
 
         const order = await razorpayInstance.orders.create(options);
-        console.log("order create for course ", order)
+        // console.log("order create for course ", order)
     
         res.json({success:true ,razorpayKey: process.env.RAZORPAY_KEY_ID, order});
     } catch (error) {
-        console.error(error)
+        // console.error(error)
         return res.status(500).json({
             success:false,
             msg:"Order creation failed  "
@@ -65,7 +78,7 @@ export const verifypayment = async (req, res) => {
         const isValid = expectedSignature === razorpay_signature;
         // console.log("valid = " , isValid);
         if(isValid ){
-            console.log("process under valid ");
+            // console.log("process under valid ");
             const userId = req.id;
             const {courseId} = req.body;
 
@@ -92,7 +105,7 @@ export const verifypayment = async (req, res) => {
             const sessionId = uuidv4();
             newPurchase.paymentId = sessionId;
             await newPurchase.save();
-            console.log("course purchase schema")
+            // console.log("course purchase schema")
             
             // Step 2: Update the purchase record with the payment session ID and save to DB
             // abhi jo purchase hua hai course uska record do 
@@ -113,18 +126,18 @@ export const verifypayment = async (req, res) => {
             await purchase.save();
 
             // now course add in user enrollement section 
-            const updatedUser =  await User.findByIdAndUpdate(
-                purchase?.userId, 
-                {$addToSet : {enrolledCourses:purchase.courseId._id}},
-                {new:true}
-            )
+            const updatedUser = await User.findByIdAndUpdate(
+                purchase.userId,
+                { $addToSet: { enrolledCourses: new mongoose.Types.ObjectId(purchase.courseId._id) } },
+                { new: true }
+            );
 
             // now update course , ab course ke ander enroll student ko add karo
-            const updatedCourse =  await Course.findByIdAndUpdate(
-                purchase?.courseId?._id,
-                {$addToSet:{enrolledStudents:purchase?.userId}}  ,
-                {new  :true}
-            )
+            const updatedCourse = await Course.findByIdAndUpdate(
+                purchase.courseId._id,
+                { $addToSet: { enrolledStudents: new mongoose.Types.ObjectId(purchase.userId) } },
+                { new: true }
+                );
 
             return res
             .status(200)
@@ -140,11 +153,11 @@ export const verifypayment = async (req, res) => {
 
 
     } catch (error) {
-        console.log("error in course purchase ", error);
+        // console.log("error in course purchase ", error);
         return res
         .status(500)
         .json({
-            msg:"Failed to but course due to internal server problem "
+            msg:"Failed to buy course due to internal server problem "
         })
     }
    
@@ -158,6 +171,8 @@ export const getSingleIsPurchasedCourse = async(req,res)=>{
         const {courseId} = req.params
         const userId = req.id;
 
+        // console.group("course id = ", courseId)
+        // console.group("userId id = ", userId)
         /*
         if(!userId){
             const courseDetail = await Course.findById(courseId);
@@ -208,7 +223,7 @@ export const getSingleIsPurchasedCourse = async(req,res)=>{
         })
         
     } catch (error) {
-        console.log("failed to load course ", error)
+        // console.log("failed to load course ", error)
         return res
         .status(500)
         .json({
@@ -238,7 +253,7 @@ export const getAllPurchasedCourse = async(req,res)=>{
 
         
     } catch (error) {
-        console.log("error in getinng all purchased course ", error)
+        // console.log("error in getinng all purchased course ", error)
         return res
         .status(500)
         .json({

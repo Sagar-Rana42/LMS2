@@ -41,7 +41,7 @@ export const getCourseProgress = async(req,res)=>{
         })
 
     } catch (error) {
-        console.log("eerro to get course progress")
+        // console.log("eerro to get course progress")
         return res
         .status(500)
         .json({
@@ -73,7 +73,7 @@ export const lectureProgress = async(req,res)=>{
         // const lectureIndex = 
 
     } catch (error) {
-        console.log("error = ", error);
+        // console.log("error = ", error);
         return res
         .status(500)
         .json({
@@ -119,7 +119,7 @@ export const getCourseLecturesForProgress = async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     res.status(500).json({ message: "Server Error" });
   }
 };

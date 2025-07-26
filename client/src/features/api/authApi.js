@@ -29,14 +29,14 @@ export const authApi = createApi({
                 try {
                    
                     const result = await queryFulfilled;
-                    console.log("Login success:", result);
+                    // console.log("Login success:", result);
                     
                     // Ensure result.data exists before dispatching
                     if (result?.data?.user) {
                         dispatch(userLoggedIn({ user: result.data.user }));
                     }
                 } catch (error) {
-                    console.log("error from authApi " + error.message )
+                    // console.log("error from authApi " + error.message )
                 }
             },
         }),
@@ -49,14 +49,14 @@ export const authApi = createApi({
                 try {
                    
                     const result = await queryFulfilled;
-                    console.log("Login success:", result);
+                    // console.log("Login success:", result);
                     
                     // Ensure result.data exists before dispatching
                     if (result.data.user) {
                         dispatch(userLoggedIn({ user: result?.data?.user }));
                     }
                 } catch (error) {
-                    console.log("error from query pofile  authApi " + error.message )
+                    // console.log("error from query pofile  authApi " + error.message )
                 }
             },
         }),
