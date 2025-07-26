@@ -2,6 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const progress_URL = "https://lms2-f0bb.onrender.com/api/v1/course"
+
 export const courseProgressAPI = createApi({
   reducerPath: 'courseProgress', // Optional: custom reducer path
   baseQuery: fetchBaseQuery({ 

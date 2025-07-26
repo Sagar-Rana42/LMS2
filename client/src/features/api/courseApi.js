@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const COURSE_URL = "http://localhost:4000/api/v1/admin";
 // const COURSE_URL = "http://localhost:4000/api/v1/admin";
+const COURSE_URL = "https://lms2-f0bb.onrender.com/api/v1/admin";
 
 
 export const courseApi = createApi({
